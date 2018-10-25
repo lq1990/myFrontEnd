@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>03 JS onload </title>
+	<meta charset="utf-8">
+
+	<!-- 使用DOMContentLoaded,将js提前写. IE9以上才支持 -->
+	<script type="text/javascript">
+		// window.onbeforeunload = function (){
+		// 	return "really?";
+		// };
+		
+		// 兼容一下：标准浏览器和ie浏览器 在文档加载完成后就立即绑定事件
+		document.addEventListener("DOMContentLoaded",function (e)
+		{
+				console.log("DOMContentLoaded");
+				var btn=document.getElementById("btn");
+				btn.addEventListener("click",function(){
+					alert("ok");
+				},false);
+		},false)
+
+		// 所有窗口中元素都加载完成后才触发(不包括ajax请求的 内容. 
+		// 以下不建议用了。
+		// window.onload=function(){
+		// 	console.log("window.onload");
+		// };
+
+
+		// ie8 文档加载完成后就立即绑定dom的事件
+		document.onreadystatechange = function(e){
+			console.log(document.readyState);
+
+			// readyState: loading,interactive, complete
+			if(document.readyState=="interactive"){
+				var btn=document.getElementById("btn");
+				btn.onclick =function (){
+					alert("hahaha");
+				}
+			}
+		}
+
+		// ===============封装
+		// 另外：jQuery的文档加载完成后，事件的原理。
+		document.myReady = function (callback){
+			if(document.addEventListener){ // 标准浏览器
+				document.addEventListener("DOMContentLoaded",callback,false);
+			} else if(document.attachEvent){
+				// 兼容ie8以及以下浏览器
+				document.attachEvent("onreadystatechange",function(){
+					// 当文档的状态变为：interactive表示，文档dom对象可以进行访问
+					if(document.readyState=="interactive"){
+						callback(window.event);
+					}
+				});
+			} else{
+				window.onload=callback;
+			}
+		};
+
+		document.myReady(function(e){
+			// 注册事件
+			var btn = document.getElementById("btn");
+			btn.onclick = function(){
+				alert("okokok");
+			};
+		});
+
+	</script>
+</head>
+<body>
+	<input type="button" value="click" 
+		id="btn">
+
+	<a href="http://aicoder.com">link</a>
+
+
+
+
+
+
+
+
+
+	<!-- <script type="text/javascript"
+			src="03-JS.js"></script> -->
+	
+</body>
+</html>
