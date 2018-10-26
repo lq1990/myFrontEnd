@@ -10,3 +10,10 @@
 4. onclick -> DOM0,
 
 5. onload, onbeforeunload, onresize, onscroll, focus.
+
+6. mouse-event: click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave, mouseover; 
+	Properties: ClientX/Y, pageX/Y, screenX/Y, 
+
+7. keyboard: keydown, keypress, keyup.
+
+8. Packaging for Compatibility issues.

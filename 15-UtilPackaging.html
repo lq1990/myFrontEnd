@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>15 packaging</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="./js/EventUtil.js" 
+	></script>
+	<script type="text/javascript" src="./js/documentReady.js"></script>
+</head>
+<body>
+	<input type="button" value="click" id="btn">
+
+
+
+	<script type="text/javascript">
+		(function () {
+			document.myReady(function(){
+				var btn = document.getElementById("btn");
+
+				// 把封装好的拿来用
+				EventUtil.addEvent(btn,"click",function(e){
+					console.log(e);
+					console.log(this== btn);
+				});
+			});
+		})();
+	</script>
+
+</body>
+</html>
