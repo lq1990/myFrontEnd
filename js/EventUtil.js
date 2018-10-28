@@ -13,7 +13,7 @@
 					return handler.call(element,window.event);
 				});
 			}
-		}，
+		},
 
 		// 获取事件对象 兼容处理
 		getEvent:function (e) {
