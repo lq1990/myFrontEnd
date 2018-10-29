@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>23 Case Tab</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		html, body, div, ul, li {
+			padding: 0;
+			margin: 0;
+		}
+		ul, ol {
+			list-style: none;
+		}
+		body{
+			padding:100px;
+		}
+
+		.tab {
+			width: 500px
+		}
+
+		.tab .tab-h {
+			height: 30px;
+			position: relative;
+			z-index: 2;
+			/*border: 1px solid #fa0;*/
+		}
+		.tab .tab-h .tab-h-item {
+			float:left;
+			border: 1px solid #ccc;
+			background-color: #eee;
+		}
+		.tab .tab-h .tab-h-item a {
+			color:#333;	
+			text-decoration: none;
+			width: 100px;
+			float: left;
+			line-height: 28px;
+			text-align: center;
+		}
+
+		.tab .tab-b {
+			border: 1px solid #ccc;
+			position: relative;
+			z-index: 1;
+			top:-1px;
+		}
+
+		.tab .tab-h li.active {
+			border-bottom-color: #fff;
+			background-color: #fff;
+
+		}
+
+		.tab .tab-b .tab-b-item {
+			display: none;
+			height: 300px;
+			padding:10px; 
+		}
+		.tab .tab-b div.active {
+			display: block;
+		}
+	</style>
+
+</head>
+<body>
+	<div class="tab">
+		<div class="tab-h">
+			<ul class="tab-h-list" id="tabHeadList">
+				<li class="tab-h-item " tabid = "1">
+					<a href="javascript:void(0)">product</a>
+				</li>
+				<li class="tab-h-item active" tabid = "2">
+					<a href="javascript:void(0)">user</a>
+				</li>
+				<li class="tab-h-item" tabid = "3">
+					<a href="javascript:void(0)">news</a>
+				</li>
+				<li class="tab-h-item" tabid = "4">
+					<a href="javascript:void(0)">sport</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="tab-b" id="tabBody">
+			<div class="tab-b-item" tabid = "1">页签1</div>
+			<div class="tab-b-item active" tabid = "2">页签2</div>
+			<div class="tab-b-item" tabid = "3">页签3</div>
+			<div class="tab-b-item" tabid = "4">页签4</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="23.js"></script>
+</body>
+</html>

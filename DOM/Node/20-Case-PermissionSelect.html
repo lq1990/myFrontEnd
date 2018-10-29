@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>20 Case PermissionSelect</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		select {
+			width: 100px;
+			height: 200px;
+			float:left;
+		}
+
+		.box {
+			float:left;
+			width:100px;
+			text-align: center;
+		}
+		.box input {
+			width: 51px;	
+		}
+	</style>
+	<script type="text/javascript" src="./js/documentReady.js"></script>
+	<script type="text/javascript" src="./js/EventUtil.js"></script>
+</head>
+<body>
+	<select name="l" id="l" multiple="multiple">  <!-- left侧下拉列表 -->
+		<option value="1">添加商品</option>
+		<option value="2">读取商品</option>
+		<option value="3">修改商品</option>
+		<option value="4">删除订单</option>
+		<option value="5">用户查看</option>
+	</select>
+
+	<div class="box" id="box">
+		<input type="button" value=">" dir="add">
+		<input type="button" value=">>" dir="addAll">
+		<input type="button" value="<" dir="del">
+		<input type="button" value="<<" dir="delAll">
+	</div>
+
+	<select name="r" id="r" multiple="multiple"></select> <!-- right侧下拉 -->
+
+
+
+	<script type="text/javascript" src="20.js"></script>
+</body>
+</html>

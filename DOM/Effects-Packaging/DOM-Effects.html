@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Effects packaging</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		html, body, div, h3 {
+			padding: 0;
+			margin: 0;
+		}
+
+		.dialog-wrap{
+			display: none;
+		}
+		.dialog {
+			position: absolute; 
+			/* 为了不影响对其它文本的影响，使用 absolute*/
+			left: 50%;
+			top:50%;
+			margin-top: -151px;
+			margin-left: -151px;
+			background-color: #eee;
+			border:1px solid #ccc;	
+			width: 300px;
+			z-index: 1000;
+
+		}
+		.dialog-h {
+			border-bottom: 1px solid #ccc;
+			height: 30px;
+			position: relative;
+		}
+		.dialog-b {
+			height: 269px;
+		}
+		.dialog .dialog-h .close-btn{
+			font-family: Arial, sans-serif, "simsun";
+			position: absolute;
+			right:5px;
+			top:5px;
+			/*position: relative;
+			top:-27px;
+			right:5px;
+			float:right;*/
+
+			cursor: pointer;
+		}
+		.dialog-cover {
+			/*当绝对定位、上下左右都是零 时，会铺满整个屏幕*/
+			position: absolute; /*相对于父容器定位*/
+			top:0;
+			left: 0;
+			right:0;
+			bottom: 0;
+
+			background-color: #0aa;
+			z-index: 100;
+			/*设置透明*/
+			filter: alpha(opacity=80);
+			opacity: 0.8;  /*标准浏览器中。*/
+		}
+
+	</style>
+	<script type="text/javascript" src="./L.js"></script>
+</head>
+<body>
+	<input type="button" value="popup" id="btn">
+
+	<!-- <div class="dialog-wrap" id="dialog-wrap">
+		<div class="dialog-cover"></div>
+
+		<div class="dialog" id="dialog">
+			<div class="dialog-h">
+				<h3>对话框的头部</h3>
+				<i class="closeBtn" id="closeBtn">x</i>
+			</div>
+			<div class="dialog-b">
+				对话框的内容
+			</div>
+		</div>
+	</div> -->
+
+	<div id="mDialog" class="dialog-wrap" title="弹出来的对话框">
+		在对话框里显示的内容
+		<p>very good.</p>
+		<input type="button" value="关闭">
+	</div>
+
+
+
+
+	<!-- <h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1>
+	<h1>abc</h1> -->
+
+
+
+	<script type="text/javascript" src="./dom-effects.js"></script>
+</body>
+</html>
