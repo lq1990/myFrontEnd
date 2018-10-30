@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>slideshow</title>
+    <style>
+        html, body, div, ul, li {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none; 
+            /* 把链接字体下划线去掉 */
+            color: #000;
+        }
+
+        .slideshow {
+            width: 500px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            overflow:hidden;
+            position: relative;
+        }
+
+        .slideshow .slide-img-wrap {
+            width: 2000px;
+            position: absolute;
+            /* 按照父容器来定位 */
+            left: 0px;
+            top: 0;
+            z-index: 1;
+        }
+
+        .slideshow .slide-img-wrap li {
+            float: left;
+            width: 500px;
+
+        }
+        .slideshow .slide-img-wrap li img {
+            width: 500px;
+            height: 300px;
+
+        }
+
+        .slideshow .slide-btn-wrap {
+            position: absolute;
+            z-index: 100;
+            top:50%;
+            left: 0;
+            width: 500px;
+            height: 30px;
+            margin-top: -15px;
+        }
+
+        .slideshow .slide-btn-wrap a {
+            color: #eee;
+            font-size: 2;
+            line-height: 30px;
+            font-weight: bold;
+            /* background-color: rgba(199,199,199,.5); */
+            margin: 5px;
+        }
+
+        .slideshow .slide-btn-wrap a:hover {
+            background-color: #aaa;
+        }
+
+        .slideshow .slide-btn-wrap .next {
+            float: right;
+        }
+
+        .slideshow .slide-btn-wrap .prev {
+            float: left;
+        }
+
+        .slideshow .slide-sel-btn {
+            position: absolute;
+            top: 80%;
+            height: 10px;
+            width: 64px;
+            z-index: 100;
+            left: 50%;
+            margin-left: -28px;
+        }
+        .slideshow .slide-sel-btn a {
+            border-radius: 50%;
+            background-color: #fff;
+            width: 8px;
+            height: 8px;
+            margin-right: 8px;
+            float: left;
+        }
+
+        .slideshow .slide-sel-btn a.on {
+            background-color: rgb(0, 222, 238);
+        }
+
+        /* .slideshow .slide-sel-btn a.off {
+            background-color: #fff;
+        } */
+
+    </style>
+</head>
+<body>
+    <div class="slideshow">
+        <ul class="slide-img-wrap">
+            <li index="0" class="on"><a href="#"><img src="../img/nature1.jpg" alt=""></a></li>
+            <li index="1" class=""><a href="#"><img src="../img/nature2.jpg" alt=""></a></li>
+            <li index="2" class=""><a href="#"><img src="../img/nature3.jpg" alt=""></a></li>
+            <li index="3" class=""><a href="#"><img src="../img/nature4.jpg" alt=""></a></li>
+
+        </ul>
+
+        <!-- 左右滑动 -->
+        <div class="slide-btn-wrap">
+            <a href="javascript:0" class="prev">&lt;</a>
+            <a href="javascript:0" class="next">&gt;</a>
+        </div>
+
+        <!-- 圆点选择 -->
+        <div class="slide-sel-btn">
+            <a index="0" class = "on" href="javascript:0"></a>
+            <a index="1" class="" href="javascript:0"></a>
+            <a index="2" class="" href="javascript:0"></a>
+            <a index="3" class="" href="javascript:0"></a>
+        </div>
+    </div>
+    
+    <script src="slideShow.js"></script>
+</body>
+</html>

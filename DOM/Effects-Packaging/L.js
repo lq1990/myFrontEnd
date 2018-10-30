@@ -93,5 +93,39 @@
 })(window || {});
 
 
+// 封装动画的效果方法
+(function (w) {
+	var L = w.L ? w.L:{};
+
+	/**
+	 * @description - slideDown
+	 * @param {HTMLElement} element - element that is animated.
+	 * @param {number} duration - unit: ms
+	 * @return {undefined}
+	 **/
+	L.slideDown = function (element, duration) {
+		var start = Date.now();
+		element.style.display = "block";
+		var originH = element.clientHeight;
+		element.style.height = "0px";
+
+		var timer = setInterval(function () {
+			var now = Date.now();
+			element.style.height = (now-start)/duration * originH +"px";
+			if(now-start >= duration) {
+				element.style.height = originH +"px";
+				clearInterval(timer);
+			}
+
+		},1000/60);
+	};
+
+	w.L = L;
+})(window || {});
+
+
+
+
+
 
 
