@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>accordion</title>
+    <style>
+        html, body, div, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+        ul, ol {
+            list-style: none;
+        }
+        .ac {
+            width: 200px;
+            border:1px solid #ccc;
+        }
+        .ac .ac-item {
+
+        }
+
+        .ac .ac-item .ac-item-hd {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #cfcfcf;
+            border:1px solid #aaa;
+            cursor: pointer;
+        }
+        .ac .ac-item .ac-item-hd:hover {
+            background-color: #999;
+        }
+        .ac .ac-item .ac-item-bd {
+            height: 200px;
+            display: none;
+            text-align: center;
+        }
+        .ac .on .ac-item-bd {
+            display: block;
+        }
+
+    </style>
+    <script src="../lib/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <ul class="ac">
+        <li class="ac-item on">
+            <div class="ac-item-hd">head1</div>
+            <div class="ac-item-bd">content1</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">head2</div>
+            <div class="ac-item-bd">content2</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">head3</div>
+            <div class="ac-item-bd">content3</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">head4</div>
+            <div class="ac-item-bd">content4</div>
+        </li>
+    </ul>
+
+
+    <script src="./jQuery-accordion.js"></script>
+</body>
+</html>

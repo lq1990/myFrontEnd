@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>hover</title>
+    <style>
+        .box {
+            position: absolute; 
+            /* 有包裹性，根据子元素进行撑开 */
+
+            overflow: hidden;  
+            border:1px solid #ccc;
+        }
+        .left {
+            height: 200px;
+            width: 100px;
+            float: left;
+        }
+        .box .aside {
+            display: none;
+            width: 100px;
+            height: 200px;
+            float: left;
+        }
+
+
+    </style>
+    <script src="../lib/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <div class="box">
+        <div class="left"></div>
+        <div class="aside"></div>
+    </div>
+
+
+
+
+    <script src="./jQuery-Case-hover.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>case append on youtube</title>
+    <style>
+        html, body, div {
+            margin: 0;
+            padding: 0;
+        }
+        .label-wrap {
+            width: 300px;
+            height: 30px;
+            line-height: 30px;
+            padding: 10px;
+            /* margin: 100px 40%;
+            position: absolute;*/
+            border: 1px solid #ccc; 
+             overflow: hidden;  /*防止父容器塌陷 */
+        }
+
+        .label-wrap .txt-lb {
+            border:none;
+            outline: none;
+            height: 30px;
+            width: 60px;
+            line-height: 30px;
+            float: left;
+        }
+        .label-wrap .lb-span {
+            float: left;
+            border:1px solid #ccc;
+            padding: 0 10px;
+            margin-right: 10px;
+        }
+
+    </style>
+    <script src="../lib/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <div class="label-wrap">
+        <span class="lb-span">jQuery</span>
+        <span class="lb-span">jQuery</span>
+        <input type="text" class="txt-lb">
+    </div>
+    
+
+    <script src="./jQuery-Case-append.js"></script>
+</body>
+</html>
