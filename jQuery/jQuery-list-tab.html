@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>list tab</title>
+    <style>
+        html, body, div, ul, li {
+            padding: 0;
+            margin: 0;
+        }
+        ul, ol {
+            list-style: none;
+        }
+        .tab-wrap {
+            width: 602px;
+            border: 1px solid #aaa;
+        }
+        .tab-wrap .tab-hd {
+            overflow:hidden;
+        }
+        .tab-wrap .tab-hd .tab-hd-item {
+            float: left;
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #eee;
+            border: 1px solid #fafafa;
+            text-align: center;
+            cursor: pointer
+        }
+        .tab-wrap .tab-hd .tab-hd-item:hover {
+            background-color: #ddd;
+        }
+        
+        .tab-wrap .tab-bd {
+
+        }
+
+        .tab-wrap .tab-bd .tab-bd-item {
+            width: 450px;
+            height: 278px;
+            display: none;
+        }
+
+        .tab-wrap .tab-bd .on {
+            display: block;
+        }
+
+        img {
+            width: 450px;
+            height: 278px;
+        }
+    </style>
+    <script src="../lib/jquery-1.11.3.js"></script>
+</head>
+
+<body>
+    <div class="tab-wrap">
+        <ul class="tab-hd">
+            <li class="tab-hd-item">pro1</li>
+            <li class="tab-hd-item">pro2</li>
+            <li class="tab-hd-item">pro3</li>
+        </ul>
+        <ul class="tab-bd">
+            <li class="tab-bd-item on"><img src="./img/pro1.jpg" alt=""></li>
+            <li class="tab-bd-item"><img src="./img/pro2.jpg" alt=""></li>
+            <li class="tab-bd-item"><img src="./img/pro3.jpg" alt=""></li>
+        </ul>
+    </div>
+
+
+    <script src="./jQuery-list-tab.js"></script>
+</body>
+
+</html>

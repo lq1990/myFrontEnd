@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Seckill</title>
+    <style>
+        html, body, div {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .box {
+            border: 1px solid #ccc;
+            width: 583px;
+            height: 299px;
+            overflow: hidden;
+            position: relative; 
+            /* 若不设置relative，则就会按照body定位。
+            此处设置为relative 和 下方的设置为absolute呼应 */
+        }
+        .cv-box{
+            position: absolute;
+            top: 100%;
+        }
+        img {
+            width: 583px;
+            height: 299px;
+        }
+    </style>
+    <script src="../lib/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <div class="box">
+        <div class="bg-box">
+            <img src="./img/seckill_pro.jpg" alt="">
+        </div>
+        <div class="cv-box">
+            <img src="./img/seckill_cover.jpg" alt="">
+        </div>
+    </div>
+
+
+
+    <script src="./jQuery-seckill.js"></script>
+</body>
+</html>
