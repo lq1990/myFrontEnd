@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery UI</title>
+
+    <script src="../lib/jquery-1.11.3.js"></script>
+    <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../lib/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" href="../lib/jquery-ui-1.12.1.custom/jquery-ui.theme.css">
+</head>
+
+<body>
+    <div class="tabs">
+        <ul>
+            <li>
+                <a href="#tabs-1">product 1</a>
+            </li>
+            <li>
+                <a href="#tabs-2">product 2</a>
+            </li>
+            <li>
+                <a href="#tabs-3">product 3</a>
+            </li>
+        </ul>
+
+        <div id="tabs-1">
+            <p>
+                product 1 is...
+            </p>
+        </div>
+        <div id="tabs-2">
+            <p>
+                product 2 is...
+            </p>
+            <input type="button" value="OpenDialog" id="btnOpenDialog">
+            <div class="dialog-box" title="top of dialog" style="display: none; ">
+                content of dialog.
+            </div>
+        </div>
+        <div id="tabs-3">
+            <p>
+                product 3 is...
+            </p>
+        </div>
+
+    </div>
+
+
+    <script src="./jQuery-ui.js"></script>
+</body>
+
+</html>
