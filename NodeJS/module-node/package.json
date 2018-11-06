@@ -1,0 +1,19 @@
+{
+  "name": "module-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"程序运行。\"",
+    "dev": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jQuery": "^1.7.4",
+    "string-width": "^2.1.1"
+  },
+  "devDependencies": {}
+}
