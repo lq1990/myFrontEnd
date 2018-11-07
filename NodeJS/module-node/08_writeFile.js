@@ -15,6 +15,7 @@ let aFilePath = path.join(__dirname,"a.txt");
 // 同步写入
 fs.writeFileSync(aFilePath,"nihao2",{
     flag:"a", // append方式
+    
 });
 
 
