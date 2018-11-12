@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>user list</title>
+    <style>
+        div {
+            color:blueviolet;
+            font-size: 36px;
+        }
+    </style>
+</head>
+<body>
+    <h2>
+        <!-- 两个大括号：内为输出的属性值 -->
+        {{mytitle}}
+    </h2>
+    
+    {{each users as val index}}
+    <p>{{index}} ---- {{val.id}} ---- {{val.name}} </p>
+    {{/each}}
+
+    <div id="div">
+        用户的列表
+
+    </div>
+
+    <script>
+        var div = document.getElementById("div");
+        div.onclick = function () {
+            div.style.color="red";
+        }
+    </script>
+</body>
+</html>

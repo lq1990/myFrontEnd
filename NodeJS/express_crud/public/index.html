@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <style>
+        div {
+            color: blueviolet;
+            font-size: 36px;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div">
+        抓不到我
+
+    </div>
+
+    <script>
+        var div = document.getElementById("div");
+        var val = 100;
+        div.onclick = function () {
+            div.style.color = "red";
+
+            val = Math.random()*100-50 +100;
+            div.style.left = val + "px";
+            div.style.top = val + "px";
+        }
+    </script>
+</body>
+
+</html>
