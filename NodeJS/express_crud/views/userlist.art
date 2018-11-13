@@ -19,11 +19,11 @@
     </h2>
     
     {{each users as val index}}
-    <p>{{index}} ---- {{val.id}} ---- {{val.name}} </p>
+    <p>{{index}} ----{{val}} ---- {{val.id}} ---- {{val.name}} -- {{val.age}} </p>
     {{/each}}
 
     <div id="div">
-        用户的列表
+        USERLIST
 
     </div>
 
