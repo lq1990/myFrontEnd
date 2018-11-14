@@ -53,7 +53,7 @@ let data = Mock.mock({
     [
         {
             "id|+1":20000,
-            "name":"@cname",
+            "name":"@name",
             "email":"@email",
             "phone":"@natural(13200000,13300000)",
             "address":"@county(true)",

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>add users</title>
+
+</head>
+
+<body>
+    <h3>add users</h3>
+
+    <!-- 当点击调单提交时，行动 -->
+    <form action="/user/add" method="POST" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>username</td>
+                <td><input type="text" name="name"></td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td><input type="email" name="email"></td>
+            </tr>
+            <tr>
+                <td>phone</td>
+                <td><input type="number" name="phone"></td>
+            </tr>
+            <tr>
+                <td>address</td>
+                <td><input type="text" name="address"></td>
+            </tr>
+            <tr>
+                <td>zip</td>
+                <td><input type="number" name="zip"></td>
+            </tr>
+            <tr>
+                <td>birthday</td>
+                <td><input type="date" name="birthday"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="reset" value="reset">
+                    <input type="submit" value="submit">
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+
+</body>
+
+</html>

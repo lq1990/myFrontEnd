@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>user list</title>
+    <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <style>
+        div {
+            margin: 10px 10px;
+            color: blueviolet;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/user/add" class="button is-large is-primary">add</a>
+
+    <table class="table is-bordered is-striped is-hoverable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>name</th>
+                <th>birthday</th>
+                <th>phone</th>
+                <th>email</th>
+                <th>address</th>
+                <th>zip</th>
+                <th>edit</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {{each users as val index}}
+            <tr>
+                <td>{{val.id}}</td>
+                <td>{{val.name}}</td>
+                <td>{{val.birthday}}</td>
+                <td>{{val.phone}}</td>
+                <td>{{val.email}}</td>
+                <td>{{val.address}}</td>
+                <td>{{val.zip}}</td>
+                <td>
+                    <a class="del" uid="{{val.id}}"" href="/user/del?id={{val.id}}">delete</a>
+                </td>
+            </tr>
+            {{/each}}
+
+        </tbody>
+    </table>
+
+    <!-- <h2>
+         两个大括号：内为输出的属性值
+        hello
+        {{mytitle}}
+    </h2>
+    
+    {{each users as val index}}
+    <p>{{index}} ---- {{val.id}} ---- {{val.name}} -- {{val.phone}} </p>
+    {{/each}}
+    -->
+
+    <div id="div">
+        click to change color
+    </div>
+
+    <script>
+        var div = document.getElementById("div");
+        div.onclick = function () {
+            div.style.color = '#' + Math.floor(Math.random() * 0xffffff).toString(16);
+        }
+
+        // 给del添加confirm事件
+        $(function () {
+            $(".del").on("click", function (e) {
+                if (!confirm("delete "+ $(this).attr("uid") +" or not?")) {
+                    // 用户取消
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>

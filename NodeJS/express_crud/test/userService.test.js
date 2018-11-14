@@ -99,5 +99,26 @@ describe("userService Test", function () {
         })
 
     });
+
+    it("#delUser",function () {
+        // 正常删除数据
+        const t = userService.delUser(20004);
+        t.should.eqls({
+            code:1,
+            msg:"del successfully"
+        });
+
+        userService.delUser(0).should.eqls({
+            code: 0,
+            msg: "del failed"
+        });
+
+        // 删除异常数据
+        userService.delUser("abc").should.eqls({
+            code: 0,
+            msg: "del failed"
+        });
+
+    })
 })
 
