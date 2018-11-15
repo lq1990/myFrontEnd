@@ -28,3 +28,12 @@
 | mocha | lib for testing |
 | istanbul & nyc | coverage testing |
 | mockjs | generating random values |
+| simplePagination.js | |
+
+## useful Syntax
+
+```
+.find(u => u.id == id);
+.findIndex(u => u.id == id);
+
+```

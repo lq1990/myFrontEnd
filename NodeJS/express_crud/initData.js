@@ -49,7 +49,7 @@ jsondb.users || (jsondb.users = []); // 短路表达式
 
 // 使用mock 生成数据
 let data = Mock.mock({
-    "users|33":
+    "users|133":
     [
         {
             "id|+1":20000,

@@ -28,8 +28,6 @@ describe("userService Test", function () {
         console.log("=====================");
     })
 
-
-
     // 定义测试用例: 测试getUsers
     it("#getUsers", function () {
         // 这个方法执行后，返回一个数组
@@ -39,8 +37,6 @@ describe("userService Test", function () {
         assert.equal(Array.isArray(arr),true);
         assert.equal(arr.length>=10,true);
     });
-
-
     //#region node原生的assert模块
     // it("#getPageUsers", function () {
     //     console.log("unit test for getPageUsers, not yet finished.")
@@ -119,6 +115,17 @@ describe("userService Test", function () {
             msg: "del failed"
         });
 
+    });
+
+    it("#getUserById",function () {
+        should(userService.getUserById(-8)).be.Null();
+        should(userService.getUserById("1a")).be.Null();
+        should(userService.getUserById("20000")).be.Null();
+        should(userService.getUserById(20000)).containEql({
+            id:20000
+        });
+
     })
+
 })
 

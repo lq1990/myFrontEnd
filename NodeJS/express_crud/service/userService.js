@@ -34,6 +34,7 @@ exports.getPageUsers = function (page, size) {
 
     return {
         users: dbjson.users.slice((page - 1) * size, page * size),
+        count: dbjson.users.length,
         code: 1,
         msg: "success"
     };
@@ -68,7 +69,7 @@ function _savejson(jsonData) {
     fs.writeFileSync(path.join(__dirname, "../db.json"), strJson, {
         encoding: "utf8"
     });
-}
+};
 
 exports.delUser = function (id) {
     if (id > 0 && typeof (id) == "number") {
@@ -85,6 +86,34 @@ exports.delUser = function (id) {
     return {
         code: 0,
         msg: "del failed"
+    }
+};
+
+exports.getUserById= function (id) {
+    if(typeof(id) === "number" && id>0){
+        return dbjson.users.find(u => u.id ==id);
+    }
+    
+    return null;
+};
+
+exports.editUser = function (user) {
+    if(user && user.id >0 && typeof(user.id)==="number"){
+        const editIdx = dbjson.users.findIndex(u=>u.id===user.id);
+        dbjson.users.splice(editIdx,1,user);
+        _savejson(dbjson);
+        return {
+            msg:"edit successfully",
+            code: 1,
+            data: user,
+            
+        }
+    };
+
+    return {
+        msg:"type is not right.",
+        code: 0,
+        data: user
     }
 }
 

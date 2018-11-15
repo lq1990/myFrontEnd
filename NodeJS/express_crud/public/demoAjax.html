@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/ajaxHelper.js"></script>
+</head>
+
+<body>
+    <input type="button" value="get data" id="getBtn">
+    <input type="button" value="get data -POST" id="postBtn">
+    <script>
+        window.onload = function () {
+            var btnGet = document.getElementById("getBtn");
+            btnGet.onclick = function () {
+                ajaxGet("/user.json", function (data) {
+                    console.log(data);
+                });
+
+            }
+
+            var btnPost = document.getElementById("postBtn");
+            btnPost.onclick = function () {
+                ajaxPost("/api/user","id=9&com=aicoder", function (data) {
+                    console.log("data: ",data);
+
+                    var user= JSON.parse(data); // data默认为str类型。需要转换成json格式。
+
+                    console.log("user:",user);
+                    console.log("user.id: ",user.id);
+                    console.log("user.com: ",user.com);
+                });
+            }
+
+        }
+    </script>
+</body>
+
+</html>

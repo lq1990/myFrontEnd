@@ -2,7 +2,7 @@
  * @Author: lq 
  * @Date: 2018-11-12 18:32:55 
  * @Last Modified by: lq
- * @Last Modified time: 2018-11-14 21:30:17
+ * @Last Modified time: 2018-11-15 22:41:45
  */
 //#region
 /*
@@ -75,6 +75,9 @@ const art_express = require("express-art-template");
 const userService = require("./service/userService.js");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const path = require("path");
+const router = require("./routers/index.js");
+const apiRouter = require("./routers/apirouter");
 
 let app = express(); // 创建app，app负责管理中间件
 
@@ -84,8 +87,15 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 let upload = multer(); // form中为 multipart/form-data时，使用multer
 // 上传文件时用form-data格式
 
+// ============= 把public做成静态目录 ===============
+app.use(express.static(path.join(__dirname,"public")));
 
 app.engine("art", art_express); // 第一个参：文件后缀名，第二个：模板函数
+
+// 添加路由的中间件 ================================== 路由
+app.use("/stu",router);
+// 添加api请求的路由中间件
+app.use("/api",apiRouter);
 
 app.get("/user/list", (req, res) => {
     /*
@@ -100,9 +110,11 @@ app.get("/user/list", (req, res) => {
     // 通过query获取url中 ?后面的key-val值
     const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
-    console.log(page, size);
+    // console.log(page, size);
 
     const data = userService.getPageUsers(page, size);
+    data.page = req.query.page;
+    
     // res.render("userlist.art",{
     //     mytitle: "title page",
     //     users: data.users,
@@ -137,15 +149,51 @@ app.post("/user/add", upload.array(), (req, res) => {
     res.redirect("/user/list");
 });
 
-
-app.listen("57789", () => {
-    console.log("http://127.0.0.1:57789");
-});
-
-app.get("/user/del", (req, res)=>{
+app.get("/user/del", (req, res) => {
     userService.delUser(parseInt(req.query.id));
     // res.send(req.query.id);
 
     res.redirect("/user/list");
 });
 
+// 拿到，即显示 edit用户数据的页面
+app.get("/user/edit", (req, res) => {
+    const user = userService.getUserById(parseInt(req.query.id));
+
+    if (user == null) {
+        res.redirect("/user/list");
+    };
+    // 渲染数据之前，把页面给它
+    res.render("users/edit.art", user);
+    
+});
+
+// edit结束后，将表单提交
+app.post("/user/edit",upload.array(), (req,res)=>{
+    console.log("req.body.id: ",req.body.id);
+    let user = Object.assign({}, req.body, {
+        id: parseInt(req.body.id)
+    });
+
+    const data = userService.editUser(user);
+
+    if(data.code === 1){
+        res.redirect("/user/list");
+        return;
+
+    } else{
+        // 若修改失败，继续修改，显示当前修改的页面
+        res.render("users/edit.art", user);
+    }
+    
+});
+
+app.post("/api/user", (req,res)=>{
+    res.json(req.body); // 直接把请求数据返回给前端，以json格式
+});
+
+
+
+app.listen("57789", () => {
+    console.log("http://127.0.0.1:57789");
+});

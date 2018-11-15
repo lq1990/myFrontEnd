@@ -18,8 +18,13 @@
 </head>
 
 <body>
+    静态目录的主页面！
+    <input type="button" value="get data" id="btnGet">
+    <input type="button" value="get data - POST" id="btnPost">
+
+
     <div id="div">
-        抓不到我
+        catch me
 
     </div>
 
@@ -27,12 +32,60 @@
         var div = document.getElementById("div");
         var val = 100;
         div.onclick = function () {
-            div.style.color = "red";
+            div.style.color = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 
-            val = Math.random()*100-50 +100;
+            val = Math.random() * 100 - 50 + 100;
             div.style.left = val + "px";
             div.style.top = val + "px";
-        }
+        };
+
+        // ========================================================
+        // ====================== 原生ajax请求 ↓ =====================
+        // ========================================================
+        window.onload = function () {
+            var btnGet = document.getElementById("btnGet");
+            btnGet.onclick = function () {
+                // 跟后台进行交互
+
+                // ================ Get 请求获取数据 ======================
+                // 1. 创建xhr对象
+                var xhr = new XMLHttpRequest();
+
+                // 2. 连接server。ajax请求，想访问json文件，必须通过http方式
+                xhr.open("GET", "/user.json?id=222", true); //方法、数据、是否异步
+                // 3. 发送请求数据
+                xhr.send();
+                
+                // 4. 监听状态改变的事件，并处理后台返回的数据。
+                xhr.onreadystatechange = function () {
+                    console.log("xhr.readyState: ", xhr.readyState); // 当前xhr请求的状态
+                    console.log("xhr.status: ", xhr.status); // 后台响应状态码
+                   
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log(xhr.responseText);
+                    }
+
+                };
+
+                // ==================POST请求获取数据=====================
+                var btnPost = document.getElementById("btnPost");
+                btnPost.onclick = function () {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST","/api/user",true);
+                    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    xhr.send("id=9&name=laoma&age=18");
+
+                    xhr.onreadystatechange=function () {
+                        if(xhr.readyState==4 && xhr.status == 200) {
+                            console.log(xhr.responseText);
+                        }
+
+                    }
+                }
+                
+                
+            };
+        };
     </script>
 </body>
 

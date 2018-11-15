@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery ajax</title>
+    <link href="https://cdn.bootcss.com/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <input type="button" value="get data by jQ" id="getBtn">
+    <input type="button" value="get data by jQ - POST" id="postBtn">
+    <input type="button" value="get data by jQ - ajax" id="ajaxBtn">
+    <input type="button" value="get data by jQ - getJSON" id="getJSONBtn">
+    <input type="button" value="get script" id="getScriptBtn">
+
+
+    <script>
+        function callback_msg(val){
+            console.log("data from server",val);
+        };
+
+        $(function () {
+            $("#getScriptBtn").on("click",function () {
+                // getScript: 下载js，并立即执行
+
+                // public作为根目录，
+                $.getScript("js/a.js",function (data) {
+                    console.log(data);
+
+                })
+            });
+
+            $("#getJSONBtn").on("click",function () {
+                $.getJSON("./user.json", "" ,function (data, status,xhr) {
+                    console.log(data); // data是obj格式
+                    console.log(data.id);
+                })
+            });
+
+            $("#ajaxBtn").on("click",function () {
+                $.ajax({
+                    async:true, // 是否异步。涉及到多线程
+                    url:"/api/user",
+                    type:"POST",
+                    data:"id=9&name=5678abc", // 字符串类型或json对象
+                    success: function (data,status,xhr) {
+                        console.log(data)
+                    }
+                });
+
+                console.log("ajax sends already.")
+            })
+
+            $("#getBtn").on("click",function () {
+                // jQuery ajax, methods: get(), post(), getJSON(), 
+
+                // jQuery.get( url [, data ] [, success ] [, dataType ] )
+                // 把user.json模拟为数据库中的数据。
+                $.get("./user.json",{id:9,name:"222"}, function(data, status, xhr){
+                    console.log(data.id); // 123
+                    console.log(status);
+                    // 最终显示出来的是 user.json文件中的内容。{id:9,name:"222"}是 query str.
+                },"json");
+                // 简单写法
+                $.get("./user.json",function (data) {
+                    console.log(data); // data为从数据库中获取的数。
+                    console.log(typeof(data)); // 默认认定为json格式
+                })
+            });
+
+            // jQuery.post( url [, data ] [, success ] [, dataType ] )
+            $("#postBtn").on("click",function () {
+                $.post("/api/user", {id:123,name:"lq"},function (data) {
+                    console.log(data); // data为 自己设置的 {id:123,name:"lq"}
+                })
+            });
+
+        })
+    </script>
+</body>
+
+</html>

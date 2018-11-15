@@ -7,20 +7,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>user list</title>
     <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/lib/simplePagination/simplePagination.css">
     <style>
         div {
             margin: 10px 10px;
-            color: blueviolet;
+            color: rgb(176, 143, 207);
             font-size: 24px;
         }
     </style>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/lib/simplePagination/jquery.simplePagination.js"></script>
+
 </head>
 
 <body>
+    <h1 class="title is-1 has-text-info">coding</h1>
+
     <a href="/user/add" class="button is-large is-primary">add</a>
 
-    <table class="table is-bordered is-striped is-hoverable">
+    <table class="table is-bordered is-narrow is-striped is-hoverable">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,8 +35,9 @@
                 <th>email</th>
                 <th>address</th>
                 <th>zip</th>
+                <!-- <th>delete</th> -->
                 <th>edit</th>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -45,13 +51,16 @@
                 <td>{{val.address}}</td>
                 <td>{{val.zip}}</td>
                 <td>
-                    <a class="del" uid="{{val.id}}"" href="/user/del?id={{val.id}}">delete</a>
-                </td>
+                    <a class="del" uid="{{val.id}}"" href="/user/del?id={{val.id}}">delete </a> <a uid="{{val.id}}"" href="/user/edit?id={{val.id}}">modify
+                        </a> </td> <!-- <td>
+                        <a class="edit" uid="{{val.id}}"" href="/user/edit?id={{val.id}}">edit </a> </td> -->
             </tr>
             {{/each}}
 
         </tbody>
     </table>
+
+    <div class="page"></div>
 
     <!-- <h2>
          两个大括号：内为输出的属性值
@@ -77,13 +86,30 @@
         // 给del添加confirm事件
         $(function () {
             $(".del").on("click", function (e) {
-                if (!confirm("delete "+ $(this).attr("uid") +" or not?")) {
+                if (!confirm("delete " + $(this).attr("uid") + " or not?")) {
                     // 用户取消
                     e.stopPropagation();
                     e.preventDefault();
                 }
             });
+
+            // 初始化分页的标签
+            $(".page").pagination({
+                currentPage:"{{page}}",
+                items: "{{count}}",
+                itemsOnPage: 10,
+                cssStyle: "light-theme",
+                displayedPages: 10,
+                prevText:"上一页",
+                nextText:"下一页",
+                onPageClick: function (num, event) {
+                    window.location.href="/user/list?page="+ num + "&size=10";
+                },
+
+            })
         })
+
+        
     </script>
 </body>
 
