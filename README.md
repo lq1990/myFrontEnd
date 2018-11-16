@@ -28,7 +28,8 @@
 | mocha | lib for testing |
 | istanbul & nyc | coverage testing |
 | mockjs | generating random values |
-| simplePagination.js | |
+| simplePagination.js | pagination |
+| Magnific-Popup | popup |
 
 ## useful Syntax
 

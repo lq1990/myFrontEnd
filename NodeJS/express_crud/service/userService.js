@@ -32,6 +32,8 @@ exports.getPageUsers = function (page, size) {
         }
     };
 
+    dbjson.users.sort((a,b)=>b.id-a.id);
+    
     return {
         users: dbjson.users.slice((page - 1) * size, page * size),
         count: dbjson.users.length,

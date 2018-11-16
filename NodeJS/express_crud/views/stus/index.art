@@ -1,3 +1,13 @@
+<!-- 异步方式创建学生list -->
+<!-- 有了ajax直接实现删除用户，而不必刷新页面 -->
+
+<!-- 
+1. 引入js，css
+2. 写html标签
+3. 给弹出来的层添加样式
+4. 初始化弹出来的层和点击事件 
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,13 +16,370 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>students list asynchronous</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+    <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/lib/magnific-popup.css">
+    <script src="/lib/jquery.magnific-popup.min.js"></script>
+    <!-- 上面的两个路径，以public为根目录，根目录下的lib -->
+
+    <link rel="stylesheet" href="/lib/simplePagination/simplePagination.css">
+    <script src="/lib/simplePagination/jquery.simplePagination.js"></script>
+    <style>
+        .pop-dialog {
+            position: relative;
+            background-color: #fff;
+            padding: 20px;
+            width:auto;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>aicoder.com</h1>
+    index.art for router/index.js
+    <hr>
+
+    <a class="button is-large has-text-danger" href="#addDialog" id="btnAdd">add</a>
+
+    <!-- S: 显示用户数据的列表 -->
+    <table class="table is-bordered is-striped is-hoverable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>name</th>
+                <th>birthday</th>
+                <th>phone</th>
+                <th>email</th>
+                <th>address</th>
+                <th>zip</th>
+                <!-- <th>delete</th> -->
+                <th>edit</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbData">
+
+        </tbody>
+    </table>
+    <!-- E: 显示用户数据的列表 -->
+
+    <!-- pagination -->
+    <div class="pageBox">
+
+    </div>
+
+    <!-- S: 点击add，要弹出的层 -->
+    <div id="addDialog" class="pop-dialog mfp-hide">
+        <!-- 点击add，要弹出的层 -->
+        <h3 class="title is-4">USER INFO</h3>
+        <br>
+
+        <form id="frmAdd">
+            <table>
+                <tr>
+                    <td>name: </td>
+                    <td>
+                        <input required type="text" name="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>email: </td>
+                    <td>
+                        <input type="email" name="email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>phone: </td>
+                    <td>
+                        <input type="number" name="phone">
+                    </td>
+                </tr>
+                <tr>
+                    <td>address: </td>
+                    <td>
+                        <input type="text" name="address">
+                    </td>
+                </tr>
+                <tr>
+                    <td>zip: </td>
+                    <td>
+                        <input type="text" name="zip">
+                    </td>
+                </tr>
+                <tr>
+                    <td>birthday: </td>
+                    <td>
+                        <input type="date" name="birthday">
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <input class="button" id="submitDialog" type="button" value="submit">
+            <input class="button" id="closeDialog" type="button" value="cancel">
+        </form>
+    </div>
+    <!-- E: 点击add，要弹出的层 -->
+
+    <!-- S: 点击edit，要弹出的层 -->
+    <div id="editDialog" class="pop-dialog mfp-hide">
+        <!-- 点击add，要弹出的层 -->
+        <h3 class="title is-4">EDIT USER INFO</h3>
+        <br>
+
+        <form id="frmEdit">
+            <input type="hidden" id="editId" name="id">
+            <table>
+                <tr>
+                    <td>name: </td>
+                    <td>
+                        <input required type="text" id="editName" name="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>email: </td>
+                    <td>
+                        <input type="email" id="editEmail" name="email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>phone: </td>
+                    <td>
+                        <input type="number" id="editPhone" name="phone">
+                    </td>
+                </tr>
+                <tr>
+                    <td>address: </td>
+                    <td>
+                        <input type="text" id="editAddress" name="address">
+                    </td>
+                </tr>
+                <tr>
+                    <td>zip: </td>
+                    <td>
+                        <input type="text" id="editZip" name="zip">
+                    </td>
+                </tr>
+                <tr>
+                    <td>birthday: </td>
+                    <td>
+                        <input type="date" id="editBirthday" name="birthday">
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <input class="button" id="submitEditDialog" type="button" value="edit">
+            <input class="button" id="closeEditDialog" type="button" value="cancel">
+        </form>
+    </div>
+    <!-- E: 点击edit，要弹出的层 -->
 
     <!-- 显示用户数据的列表 -->
-    
+    <script>
+        var currPage = 1;
+        $(function () {
+            // 初始化表单数据
+            initTableData();
+
+            // 事件委托的方式绑定删除用户的事件
+            initBindDelEvent();
+
+            initAddDialog();
+
+            initBindEditEvent();
+
+        });
+
+        function initBindEditEvent() {
+            $("#tbData").on("click", ".editBtn", function () {
+                // alert($(this).attr("uid"));
+                var $tr = $(this).parent().parent();
+
+                // 用find找到tr 的后代
+                console.log($tr.find("td").eq(0).text()); // id
+                $("#editId").val($tr.find("td").eq(0).text());
+
+                console.log($tr.find("td").eq(1).text()); // name
+                $("#editName").val($tr.find("td").eq(1).text());
+
+                console.log($tr.find("td").eq(2).text()); // birthday
+                $("#editBirthday").val($tr.find("td").eq(2).text());
+
+                console.log($tr.find("td").eq(3).text()); // phone
+                $("#editPhone").val($tr.find("td").eq(3).text());
+
+                console.log($tr.find("td").eq(4).text()); // email
+                $("#editEmail").val($tr.find("td").eq(4).text());
+
+                console.log($tr.find("td").eq(5).text()); // address
+                $("#editAddress").val($tr.find("td").eq(5).text());
+
+                console.log($tr.find("td").eq(6).text()); // zip
+                $("#editZip").val($tr.find("td").eq(6).text());
+
+
+            })
+            $("#closeEditDialog").on("click", function () {
+                $.magnificPopup.close();
+            });
+            $("#submitEditDialog").on("click", function () {
+                // 把修改完的数据提交到后台
+                $.ajax({
+                    url: "/api/userupdate",
+                    data: $("#frmEdit").serialize(),
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $.magnificPopup.close();
+                            initTableData();
+                        } else {
+                            alert("edit failed.")
+                        }
+                    }
+
+                })
+            })
+
+        };
+
+        // 加载表格数据
+        temp = 1;
+        function initTableData(page,size) {
+            console.log("temp: ", temp++);
+
+            page = page || currPage || 1; // 兼容了添加和修改
+            size = size || 10;
+            // /api/pageuser 参考apirouter.js文件中get方法里面内容
+            $.getJSON("/api/pageuser", {page:page, size:size}, function (retData, status, xhr) {
+                let strTemp = "";
+                // 方式一：拼接字符串
+                for (var i = 0; i < retData.data.length; i++) {
+                    strTemp += "<tr>";
+                    strTemp += "  <td>" + retData.data[i].id + "</td>";
+                    strTemp += "  <td>" + retData.data[i].name + "</td>";
+                    strTemp += "  <td>" + retData.data[i].birthday + "</td>";
+                    strTemp += "  <td>" + retData.data[i].phone + "</td>";
+                    strTemp += "  <td>" + retData.data[i].email + "</td>";
+                    strTemp += "  <td>" + retData.data[i].address + "</td>";
+                    strTemp += "  <td>" + retData.data[i].zip + "</td>";
+                    strTemp += "  <td><a class='editBtn' uid='" + retData.data[i].id + "'href='#editDialog'>edit</a> <a class='delBtn' uid='" + retData.data[i].id + "'href='#'>del</a></td>";
+                    strTemp += "</tr>";
+                }
+                $("#tbData").html(strTemp);
+
+                $(".editBtn").magnificPopup({
+                    type: "inline",
+                    closeBtnInside: true,
+                    closeOnBgClick: false
+                });
+
+                // pagination
+                $(".pageBox").pagination({
+                    items:retData.count,
+                    itemsOnPage:retData.size,
+                    currentPage:retData.page,
+                    prevText:"上一页",
+                    nextText:"下一页",
+                    cssStyle:"light-theme",
+                    onPageClick:function (pageNum) {  // 注意：递归了。可是我自己试验了下，并没有出现无限执行================
+                        currPage = pageNum;
+                        initTableData(pageNum,10);
+                    } 
+                });
+            });
+        }
+
+        // 事件委托的方式绑定删除用户的事件
+        function initBindDelEvent() {
+            $("#tbData").on("click", ".delBtn", function (e) {
+                // alert("==>"+$(this).attr("uid"));
+                // 向后台发送ajax请求，删除用户数据
+                var id = $(this).attr("uid");
+                var aDom = $(this);
+
+                if (!confirm("del or not?")) {
+                    return;
+                };
+
+                // 有了ajax直接实现删除用户，而不必刷新页面
+                $.ajax({
+                    url: "/api/deluser/" + id, // 路由的方式
+                    data: "",
+                    type: "POST",
+                    success: function (data) {
+                        // console.log("/api/deluser/" + id);
+                        if (data.code == 1) {
+                            // 把页面上的数据删除掉（此处隐藏掉了）
+                            aDom.parent().parent().fadeOut();
+                            // 重新加载表格数据。而不需要刷新web
+                            initTableData();
+
+                        } else {
+                            alert("del failed" + data.msg);
+                        }
+                    }
+                });
+
+            })
+
+
+            // 动态创建的元素，绑定事件：两种方法，1.标签加载到页面上之后，再绑定点击事件。
+            // 2. 使用事件委托的形式去绑定事件
+
+            // ============ 第一种方式，不推荐。on可能会绑定多次，因为当页面加载不全时。 =====================
+            // $(".delBtn").on("click",function () {
+            //    alert($(this).attr("uid")) 
+            // });
+
+            // ============ 第二种方式，推荐用：事件委托方式绑定事件 ==================
+
+        }
+
+        function initAddDialog() {
+            // 初始化弹出层的
+            $("#btnAdd").magnificPopup({
+                type: "inline", // 行内的类型，类比图片的模式
+                closeBtnInside: true, // 显示关闭按钮
+                closeOnBgClick: false // 点击框外的部分是否关闭div
+            });
+
+            // 绑定关闭
+            $("#closeDialog").on("click", function () {
+                $("#btnAdd").magnificPopup("close");
+
+            });
+
+            // add的userinfo 提交事件
+            $("#submitDialog").on("click", function () {
+                // 拿到整个表单的内容发送到后台
+                $.ajax({
+                    url: "/api/useradd",
+                    data: $("#frmAdd").serialize(), // 此方法可以把form序列化
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        // alert("add successfully");
+                        if (data.code == 1) {
+                            // 添加成功，关闭对话框
+                            $("#btnAdd").magnificPopup("close");
+                            // 然后，初始化表格数据
+                            initTableData();
+
+                        } else {
+                            alert(data.msg);
+                        }
+
+                    }
+                });
+            });
+
+        };
+
+    </script>
 </body>
 
 </html>
