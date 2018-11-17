@@ -1,0 +1,29 @@
+{
+  "course": [
+    {
+      "id": 100,
+      "name": "Betty Anderson",
+      "zip": 13197
+    },
+    {
+      "id": 101,
+      "name": "John Clark",
+      "zip": 22319
+    },
+    {
+      "id": 102,
+      "name": "Elizabeth Rodriguez",
+      "zip": 12592
+    }
+  ],
+  "course_category": [
+    {
+      "id": 10,
+      "name": "Gxcgchyuo Ysxhb Lskj"
+    },
+    {
+      "id": 11,
+      "name": "Yvqcoc Nntepgaz Pgavw Xnfjeqh Oeopdvkvb"
+    }
+  ]
+}
