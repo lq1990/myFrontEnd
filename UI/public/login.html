@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
+    <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
+    <!-- <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-de.js"></script> -->
+    <!-- <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-zh_CN.js"></script> -->
+
+    <title>login</title>
+    <style>
+        html, body, div, td, table, form, tr {
+            padding: 0;
+            margin: 0;
+        }
+        .login-wrap {
+            height: 200px;
+            width: 300px;
+            border:1px solid #69c;
+
+            /*水平方向 - 块级元素居中用margin:0 auto, 行内元素居中text-align:center */
+            /*垂直方向 -  行内元素居中text-align:middle */
+            position: absolute;
+            top: 50%;
+            left:50%;
+            margin-top:-101px;
+            margin-left:-151px;
+
+        }
+        #frmLogin {
+            padding-top: 40px;
+            padding-left: 27px;
+        }
+        .btn {
+            margin-top: 5px;
+            width: 100%;
+            height: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="login-wrap">
+        <form action="" id="frmLogin">
+            <table>
+                <tr>
+                    <td>username: </td>
+                    <td><input type="text" name="username" class="easyui-textbox" data-options="validType:['length[1,80]'], iconCls:'icon-man', prompt:'username', required:true"></td>
+                </tr>
+                <tr>
+                    <td>password: </td>
+                    <td><input name="userpwd" class="easyui-passwordbox" prompt="password" data-options="required:true, validType:['length[3,9]']"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="easyui-linkbutton btn" type="button" value="login" id="btnLogin">
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+
+
+
+    <script>
+        // =========================表单校验==================================
+        $("#btnLogin").on("click", function () {
+            if ($("#frmLogin").form("validate")) { // 当校验通过时
+                // $.messager.alert("tips","pass","info");
+                // 校验通过时，发送ajax请求到后台，校验用户名和密码是否正确
+                $.ajax({
+                    url: "/authorized",
+                    type: "POST",
+                    data: $("#frmLogin").serialize(), // 拿到表单数据，以用于后面的校验============serialize============= 
+                    dataType:"JSON",
+                    success: function (data) {
+                        // 前后端需要约定好。若登录成功：{code:1, msg:"login successfully", auth_token:"qwert"}
+                        // login成功后，把token放到cookie
+                        // 前后端需要约定好。若登录失败：{code:8, msg:"failed to login"}
+                        if(data.code === 8) {
+                            $.messager.alert("info","failed to login","warning");
+                        } else {
+                            // 登录成功后
+                            // $.messager.alert("info","ajax-success: login successfully","info");
+                            window.location.href="./admin.html"
+                        }
+                        
+                    }
+                })
+
+            } else {
+                $.messager.alert("tips", "name or password is not valid.", "warning");
+            }
+        })
+
+    </script>
+</body>
+
+</html>

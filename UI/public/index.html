@@ -4,10 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-gray/easyui.css">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
+    <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-de.js"></script>
+
     <title>/public/index.html</title>
+
+    <style>
+        #addDialog {
+            display: none;
+        }
+
+    </style>
 
 </head>
 <body>
     json-server index.html in public
+    <input type="button" id="btnOpenDialog" value="popup Dialog">
+    <input type="button" id="btnCloseDialog" value="close Dialog">
+    
+    <div id="addDialog" class="">
+        <h3>Dialog content hier</h3>
+    </div>
+    
+    <script>
+        $(function() {
+            $("#btnCloseDialog").on("click",function () {
+                $("#addDialog").dialog("close");
+            });
+
+
+            $("#btnOpenDialog").on("click",function () {
+                $("#addDialog").dialog({
+                    height: 300,
+                    width: 300,
+                    title:"title of dialog",
+                    modal:false,
+                    collapsible: true,
+                    minimizable: true,
+                    maximizable:true,
+                    resizable: true,
+                    // toolbar显示在上部
+                    toolbar: [
+                        {
+                            text: "add",
+                            iconCls: "icon-add",
+                            handler: function () {
+                                // $.messager.alert("title","content","info");
+                                $.messager.show({
+                                    title:"msg title",
+                                    msg: "great",
+                                    timeout:4000
+                                })
+                            }
+                        },
+                        {
+                            text: "edit",
+                            iconCls: "icon-edit",
+                            handler: function () {
+                                $.messager.alert("edit","hier content","warning");
+                            }
+                        },
+                        {
+                            text:"delete",
+                            iconCls: "icon-remove",
+                            handler: function () {
+                                $.messager.confirm("tip","sure del?", function (r) {
+                                    if(r){
+                                        console.log("confirm");
+                                    } else {
+                                        console.log("not confirm");
+                                    }
+                                })
+                            }
+                        }
+                    ],
+
+                    // button 显示在下部
+                    buttons: [
+                        {
+                            text: "yes",
+                            iconCls: "icon-ok",
+                            handler: function () {
+                                $.messager.alert("title","close?","question");
+                            }
+                        },
+                        {
+                            text: "cancel",
+                            iconCls: "icon-cancel",
+                            handler: function () {
+                                $("#addDialog").dialog("close");
+                            }
+                        }
+                    ],
+                    onOpen: function () {
+                      console.log("onOpen");
+                    },
+                    onBeforeClose: function () {
+                        console.log("onBeforeClose");
+                    }
+
+                });
+            });
+        })
+    </script>
 </body>
 </html>

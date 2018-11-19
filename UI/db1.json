@@ -1569,20 +1569,6 @@
       "category_Id": 3
     },
     {
-      "id": 1224,
-      "course_name": "识亲在中被直等",
-      "author": "彭丽",
-      "college": "比件名行低一",
-      "category_Id": 4
-    },
-    {
-      "id": 1225,
-      "course_name": "更带又规上或问解地",
-      "author": "谢敏",
-      "college": "商火名先同期",
-      "category_Id": 1
-    },
-    {
       "id": 1226,
       "course_name": "极周论同史史就大争段",
       "author": "潘伟",
@@ -1609,9 +1595,9 @@
     },
     {
       "id": "1400",
-      "course_name": "what",
-      "author": "lq",
-      "college": "well",
+      "course_name": "what2",
+      "author": "lq2",
+      "college": "well2",
       "category_Id": "3"
     }
   ],

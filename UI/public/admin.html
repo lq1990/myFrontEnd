@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-gray/easyui.css">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
+    <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-de.js"></script>
+
+    <title>后台管理系统 /public/admin.html</title>
+
+</head>
+
+<body class="easyui-layout">
+    <!-- <div id="cc" class="easyui-layout" style="width:600px; height:400px;"> -->
+    <div data-options="region:'north', title:'', iconCls: 'icon-ok', split: true" style="height: 70px;">
+        <h2 style="text-align:center; color: #44d39f">Management System</h2>
+    </div>
+    <!-- <div data-options="region:'east', title:'East', split: true" style="width: 100px;"></div> -->
+    <div data-options="region:'west', title:'Menu', split: true" style="width: 200px;">
+        <input type="button" value="add tab" id="addTab">
+        <input type="button" value="select tab" id="selTab">
+    </div>
+
+    <div data-options="region:'center', title:'', split: true" style="padding:5px; background: #eee">
+        <!-- <input type="button" value="折叠左侧菜单栏" id="btnCloseNav"> -->
+        <div id="tt" data-options="fit:true" class="easyui-tabs">
+            <div title="userlist" style="padding:20px;display:none;">
+                tab1
+            </div>
+            <div title="tab2" style="padding:20px;display:none;">
+                tab2
+            </div>
+            <div title="tab3" style="padding:20px;display:none;">
+                tab3
+            </div>
+        </div>
+    </div>
+
+    <div data-options="region:'south', title:'', split: true" style="height: 50px;">
+        <p style="text-align:center">&copy文刀</p>
+    </div>
+    <!-- </div> -->
+
+
+    <script>
+        $(function () {
+            $("#btnCloseNav").on("click", function () {
+                $("body").layout("collapse", "west");
+            });
+
+            $("#addTab").on("click",function () {
+                $("#tt").tabs("add", {
+                    title:"add_",
+                    iconCls:"icon-no",
+                    // content:"<h3>"+Date.now()+"</h3>",
+                    href: "./index.html",
+                    selected:true,
+                    closable:true,
+                })
+            });
+
+            $("#selTab").on("click",function () {
+                $("#tt").tabs("select","tab2");
+            })
+
+        })
+    </script>
+</body>
+
+</html>
