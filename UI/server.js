@@ -1,6 +1,6 @@
 const jsonServer = require("json-server");
 const server = jsonServer.create();
-const router = jsonServer.router("db.json");
+const router = jsonServer.router("db1.json");
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
@@ -20,12 +20,12 @@ server.get("/echo", (req, res) => {
 
 server.post("/authorized", (req, res) => {
     // res.body拿到表单用户名usename、密码userpwd
-    if (req.body.username === "admin" && req.body.userpwd === "pwd") {
+    if (req.body.username === "admin" && req.body.userpwd === "N/omUzCtg+qoee+x4ttjgIls9jk") {
         // jsonp支持跨域
         res.jsonp({
             code: 1,
             msg: "msg: login successfully",
-            auth_token: "qwert"
+            auth_token: "qwert" // ==================== auth_token 会放到cookie中，传给server
         })
     } else {
         res.jsonp({
@@ -53,11 +53,11 @@ server.use("/api", (req, res, next) => {
 
     // isAuthorized：校验的逻辑
     if (req.get("Authorization")) {
-        next(); // 跳转到下一个api中间件，line 59
+        next(); // 跳转到下一个api中间件，line 80
     } else {
         // res.sendStatus(401); // 给客户端发送一个未验证的字符串
         res
-            .status(401)
+            .status(401) // 状态码
             .jsonp({
                 code: 7, // 假设7：未授权
                 msg: "not login, can't visit"
@@ -71,6 +71,7 @@ router.render = (req, res) => {
         msg: "ok",
         code: 1,
         data: res.locals.data
+
     })
 }
 

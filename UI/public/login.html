@@ -12,7 +12,9 @@
     <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
     <!-- <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-de.js"></script> -->
     <!-- <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-zh_CN.js"></script> -->
-
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <!-- 引入加密库 -->
+    <script src="./lib/sha1.js"></script>
     <title>login</title>
     <style>
         html, body, div, td, table, form, tr {
@@ -56,10 +58,11 @@
                 </tr>
                 <tr>
                     <td>password: </td>
-                    <td><input name="userpwd" class="easyui-passwordbox" prompt="password" data-options="required:true, validType:['length[3,9]']"></td>
+                    <td><input name="userpwd" value="pwd" class="easyui-passwordbox" prompt="password" data-options="required:true, validType:['length[3,9]']"></td>
                 </tr>
                 <tr>
                     <td colspan="2">
+                        <!-- colspan="2" 把两列合并为一列-->
                         <input class="easyui-linkbutton btn" type="button" value="login" id="btnLogin">
                     </td>
                 </tr>
@@ -74,25 +77,37 @@
         // =========================表单校验==================================
         $("#btnLogin").on("click", function () {
             if ($("#frmLogin").form("validate")) { // 当校验通过时
+
+                // ======================加密================================
+                // 拿到表单中数据
+                var frmDataArr = $("#frmLogin").serializeArray();
+                // console.log(frmDataArr);
+                frmDataArr[1].value = b64_sha1(frmDataArr[1].value); // 将密码加密
+                console.log(frmDataArr);
+
                 // $.messager.alert("tips","pass","info");
                 // 校验通过时，发送ajax请求到后台，校验用户名和密码是否正确
                 $.ajax({
                     url: "/authorized",
                     type: "POST",
-                    data: $("#frmLogin").serialize(), // 拿到表单数据，以用于后面的校验============serialize============= 
-                    dataType:"JSON",
+                    // data: $("#frmLogin").serialize(), // 拿到表单数据，以用于后面的校验============serialize============= 
+                    data: frmDataArr,
+                    dataType: "JSON",
                     success: function (data) {
                         // 前后端需要约定好。若登录成功：{code:1, msg:"login successfully", auth_token:"qwert"}
                         // login成功后，把token放到cookie
                         // 前后端需要约定好。若登录失败：{code:8, msg:"failed to login"}
-                        if(data.code === 8) {
-                            $.messager.alert("info","failed to login","warning");
+                        if (data.code === 8) {
+                            $.messager.alert("info", "failed to login", "warning");
                         } else {
                             // 登录成功后
+                            // 后台返回的登录的token放到cookie中，主页面就可以通过cookie拿到auth_token
+                            Cookies.set("auth_token",data.auth_token,{path:"/"});
+
                             // $.messager.alert("info","ajax-success: login successfully","info");
-                            window.location.href="./admin.html"
+                            window.location.href = "./admin.html"
                         }
-                        
+
                     }
                 })
 
@@ -102,6 +117,11 @@
         })
 
     </script>
+    <script>
+        // Cookies.set("cookie-name","中文val");
+        Cookies.set("a cookie", "a val", { expires: 7 });
+    </script>
+
 </body>
 
 </html>

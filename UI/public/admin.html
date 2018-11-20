@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-gray/easyui.css">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-blue/easyui.css">
     <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
     <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
     <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
     <script src="./lib/jquery-easyui-1.6.9/locale/easyui-lang-de.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="./js/ajaxSetup.js"></script>
+    <link rel="stylesheet" href="./style/admin.css">
 
     <title>后台管理系统 /public/admin.html</title>
 
@@ -23,8 +26,21 @@
     </div>
     <!-- <div data-options="region:'east', title:'East', split: true" style="width: 100px;"></div> -->
     <div data-options="region:'west', title:'Menu', split: true" style="width: 200px;">
-        <input type="button" value="add tab" id="addTab">
-        <input type="button" value="select tab" id="selTab">
+        <div id="aa" class="easyui-accordion" data-options="fit:true" style="width:300px;height:200px;">
+            <div title="后台管理" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+                <p><a href="#">用户管理</a></p>
+                <p><a href="#">权限管理</a></p>
+                <p><a href="#">角色管理</a></p>
+            </div>
+            <div title="商品管理" data-options="iconCls:'icon-reload'" style="overflow:auto;padding:10px;">
+                <p><a href="#">商品列表</a></p>
+                <p><a href="#">商家管理</a></p>
+            </div>
+            <div title="类型管理">
+                <p><a href="#">类型列表</a></p>
+                <p><a href="#">类型添加</a></p>
+            </div>
+        </div>
     </div>
 
     <div data-options="region:'center', title:'', split: true" style="padding:5px; background: #eee">
@@ -32,6 +48,9 @@
         <div id="tt" data-options="fit:true" class="easyui-tabs">
             <div title="userlist" style="padding:20px;display:none;">
                 tab1
+                <input type="button" value="add tab" id="addTab">
+                <input type="button" value="select tab" id="selTab">
+                <input type="button" value="read cookie" id="getCookies">
             </div>
             <div title="tab2" style="padding:20px;display:none;">
                 tab2
@@ -49,27 +68,88 @@
 
 
     <script>
+        //#region
+        /*
+        // 执行了设置之后，后续所有的ajax请求，都会拥有以下的默认设置
+        $.ajaxSetup({
+            headers: { // 网请求头上添加信息
+                "Authorization": Cookies.get("auth_token"),
+                "zts": "abc.com"
+            },
+            statusCode: {
+                "401": function (status, xhr) {
+                    // 401：用户没有登录直接访问 /api 接口
+                    $.messager.show({
+                        timeOut: 1500,
+                        title: "info",
+                        msg: "pls login. jump to login 2 s later",
+                        closable: true
+                    });
+                    setTimeout(() => {
+                        window.location.href = "./login.html"
+                    }, 2000);
+                }
+            },
+        });*/
+        //#endregion
+
+        // 入口
         $(function () {
+            initMenu();
+        });
+
+        function initMenu() {
+            // 1.加载后台的数据
+            $.ajax({
+                url: "/api/site_nav",
+                data:"",
+                type:"GET",
+                dataType:"json",
+                success:function (resData) {
+                    
+                } 
+            });
+            // 2.生成菜单数据，加到
+        }
+
+        function back() {
+
+            $("#getCookies").on("click", function () {
+                $.messager.alert("cookies", Cookies.get("auth_token"), "info");
+                $.ajax({
+                    url: "/api/course?id=1002",
+                    data: "",
+                    dataType: "json",
+                    type: "GET",
+                    // headers:{
+                    //     "Authorization":Cookies.get("auth_token")
+                    // },
+                    success: function (da) {
+                        console.log(da);
+                    }
+                });
+            });
+
             $("#btnCloseNav").on("click", function () {
                 $("body").layout("collapse", "west");
             });
 
-            $("#addTab").on("click",function () {
+            $("#addTab").on("click", function () {
                 $("#tt").tabs("add", {
-                    title:"add_",
-                    iconCls:"icon-no",
+                    title: "add_",
+                    iconCls: "icon-no",
                     // content:"<h3>"+Date.now()+"</h3>",
                     href: "./index.html",
-                    selected:true,
-                    closable:true,
+                    selected: true,
+                    closable: true,
                 })
             });
 
-            $("#selTab").on("click",function () {
-                $("#tt").tabs("select","tab2");
+            $("#selTab").on("click", function () {
+                $("#tt").tabs("select", "tab2");
             })
-
-        })
+            
+        }
     </script>
 </body>
 
