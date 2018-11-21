@@ -1,7 +1,7 @@
 {
   "site_nav": [
     {
-      "title": "后台管理啊",
+      "title": "后台管理",
       "id": 1,
       "iconCls": "icon-ok",
       "children": [
@@ -1543,32 +1543,11 @@
       "category_Id": 2
     },
     {
-      "id": 1211,
-      "course_name": "龙响者价观据极七通",
-      "author": "萧娟",
-      "college": "却程想年门府",
-      "category_Id": 2
-    },
-    {
       "id": 1212,
       "course_name": "单成但江本目",
       "author": "邵勇",
       "college": "前白主记马的",
       "category_Id": 6
-    },
-    {
-      "id": 1213,
-      "course_name": "性速切总适些",
-      "author": "许艳",
-      "college": "联太长又族热",
-      "category_Id": 4
-    },
-    {
-      "id": 1214,
-      "course_name": "联经决机清",
-      "author": "何强",
-      "college": "战查在两性号",
-      "category_Id": 1
     },
     {
       "id": 1215,
@@ -1592,77 +1571,29 @@
       "category_Id": 4
     },
     {
-      "id": 1218,
-      "course_name": "定青自但素一口识料",
-      "author": "李丽",
-      "college": "看展月但种证",
-      "category_Id": 2
-    },
-    {
-      "id": 1219,
-      "course_name": "流且本历总备清红花",
-      "author": "崔强",
-      "college": "海江亲集片连",
-      "category_Id": 3
-    },
-    {
-      "id": 1220,
-      "course_name": "变实且候查花转海积",
-      "author": "唐静",
-      "college": "生路米识写住",
-      "category_Id": 4
-    },
-    {
       "id": 1221,
       "course_name": "农果族府结五",
       "author": "于秀兰",
       "college": "务斯办革低山",
-      "category_Id": 5
-    },
-    {
-      "id": 1222,
-      "course_name": "会话以干四",
-      "author": "许平",
-      "college": "身看比队育种",
-      "category_Id": 1
-    },
-    {
-      "id": 1223,
-      "course_name": "思必亲日国他调县据",
-      "author": "苏涛",
-      "college": "路验行世受名",
-      "category_Id": 3
+      "category_Id": "5",
+      "isEditing": ""
     },
     {
       "id": 1226,
       "course_name": "极周论同史史就大争段",
       "author": "潘伟",
-      "college": "把总各按社动",
-      "category_Id": 4
+      "college": "把总各按社动123",
+      "category_Id": "4",
+      "isEditing": ""
     },
     {
       "id": 1227
-    },
-    {
-      "\"id\"": "1400,",
-      "\"course_name\"": "\"what\",",
-      "\"author\"": "\"lq\",",
-      "\"college\"": "\"well\",",
-      "\"category_Id\"": "3",
-      "id": 1228
     },
     {
       "id": "1400,",
       "course_name": "\"what\",",
       "author": "\"lq\",",
       "college": "\"well\",",
-      "category_Id": "3"
-    },
-    {
-      "id": "1400",
-      "course_name": "what2",
-      "author": "lq2",
-      "college": "well2",
       "category_Id": "3"
     }
   ],

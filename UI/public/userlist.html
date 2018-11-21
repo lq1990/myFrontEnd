@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
+    <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
+    <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
+
+    <title>userlist</title>
+</head>
+
+<body>
+    <table id="coursett">
+    </table>
+
+
+
+    <script>
+        $(function () {
+            initTable();
+        });
+
+        function initTable() {
+            $("#coursett").datagrid({
+                // url: '/api/course',//rows:一页有多少条，page：请求当前页
+                title: 'userlist',
+                fit: true, // 铺满
+                width: 80,
+                fitColumns: true,
+                method: "GET", // http请求方法
+                idField: 'id',// 主键
+                loadMsg: '正在加载用户的信息...',
+                pagination: true, //
+                singleSelect: true, // 是否单选中
+                pageSize: 10, // 默认一页多少条
+                pageNumber: 1, // 默认显示第几页
+                pageList: [10, 20, 30],
+                queryParams: null,//让表格在加载数据的时候，额外传输的数据。
+                onBeforeLoad: function (param) { // 在表格控件请求之前，可以设置相关的参数。
+                    console.log("onbeforeload...");
+                    param._page = param.page;
+                    param._limit = param.rows;
+                    param._sort = "id";
+                    param._order = "desc";
+
+                },
+                loader: function (param, successfn, errorfn) {
+                    console.log("loader...");
+                    $.ajax({
+                        url: "/api/course",
+                        data: param, // 已经认为增加了 _page,_limit
+                        type: "GET",
+                        dataType: "json",
+                        success: function (resData, status, xhr) {
+                            var total = xhr.getResponseHeader('X-Total-Count');
+                            var datagridData = { rows: resData.data, total: total };
+                            successfn(datagridData);
+                        },
+                        error: errorfn
+                    });
+                },
+                onLoadSuccess: function (data) { // 后台请求成功之后，自动调用此方法
+                    console.log("load success...");
+                },
+                // ====================== 若想编辑某行，必须设置 editor 属性 =================================
+                columns: [[
+                    { field: 'ck', checkbox: true, align: 'left', width: 50 },
+                    { field: 'id', title: '编号', width: 80 },
+                    { field: 'course_name', title: 'course', width: 80, editor: { type: "text", options: { required: true } } },
+                    { field: 'author', title: 'author', width: 120, editor: { type: "text" } },
+                    { field: 'college', title: 'college', width: 220, editor: { type: "text" } },
+                    {
+                        field: 'category_Id', title: '分类', width: 120, editor: { type: "numberbox" }, formatter: function (value, row, index) {
+                            return '分类' + value;
+                        }
+                    },
+                    {
+                        field: 'action', title: '操作', width: 120, formatter: function (value, row, index) {
+                            // 在编辑状态：返回保存、取消
+                            // 视图状态：返回编辑、删除
+                            var html = "";
+                            if (row.isEditing) {
+                                html += "<a href='javascript:' onclick='saveRow(" + index + ")'>save</a>";
+                                html += "&nbsp;&nbsp;&nbsp;";
+                                html += "<a href='javascript:' onclick='cancelEdit(" + index + ")'>cancel</a>";
+                            } else {
+                                html += "<a href='javascript:' onclick='editRow(" + index + ")'>edit</a>";
+                                html += "&nbsp;&nbsp;&nbsp;";
+                                html += "<a href='javascript:' onclick='delRow(" + index + ")'>delete</a>"
+                            }
+
+                            return html;
+                        }
+                    },
+                ]],
+                toolbar: [{
+                    id: 'btnDownShelf',
+                    text: '添加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+
+                    }
+                }, {
+                    id: 'btnDelete',
+                    text: '删除',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        var row = $("#coursett").datagrid("getSelected");
+                        if (row) {
+                            var rowIdx = $("#coursett").datagrid("getRowIndex",row);
+                            delRow(rowIdx);
+                        } else {
+                            $.messager.alert("info","pls click one to del","warning");
+                        }
+                    }
+                }, {
+                    id: 'btnEdit',
+                    text: '修改',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+
+                    }
+                },{
+                    id:"clearAllSelect",
+                    text:"clearAllSelections",
+                    iconCls: "icon-no",
+                    handler: function () {
+                        $("#coursett").datagrid("clearSelections")
+                    }
+                }],
+
+                onHeaderContextMenu: function (e, field) {
+
+                },
+                onLoadSuccess: function (data) {
+
+                },
+                // 双击某行 或者 单机 edit 都可以进入编辑该行状态。
+                onDblClickRow: function (rowIndex, rowData) {
+                    // $.messager.alert("info",row.id+"","info")
+                    $("#coursett").datagrid("beginEdit", rowIndex);
+                },
+                onBeforeEdit: function (rowIndex, rowData) {
+                    // 当表格进行编辑的时候，自动执行的事件
+                    rowData.isEditing = true;
+                    $("#coursett").datagrid("refreshRow", rowIndex); // refreshRow ================
+                },
+                onCancelEdit: function (rowIndex, rowData) {
+                    // 取消编辑之前即 编辑完成之后，使状态恢复到原始。
+                    rowData.isEditing = false;
+                    $("#coursett").datagrid("refreshRow", rowIndex); // refreshRow ================
+                },
+                onEndEdit: function (rowIndex, rowData, change) {
+                    rowData.isEditing = false;
+                    $("#coursett").datagrid("refreshRow", rowIndex); // refreshRow ================
+                }
+            })
+
+            // 初始化分页器
+            var pager = $("#coursett").datagrid("getPager");
+            pager.pagination({
+                layout: ["list","sep","first","prev","sep","links","sep","next","last","sep","refresh","last"]
+            });
+
+        };
+
+        function editRow(rowIndex) {
+            $("#coursett").datagrid("beginEdit", rowIndex);
+            // isEditing
+        };
+        function cancelEdit(rowIndex) {
+            $("#coursett").datagrid("cancelEdit", rowIndex);
+        };
+        function saveRow(rowIndex) {
+            var originRowData = $("#coursett").datagrid("getRows")[rowIndex];
+
+            // 深度拷贝, jQ- extend, 类似 Object.assign
+            originRowData = $.extend({}, originRowData);
+
+
+            // 拿到修改完的数据
+            $("#coursett").datagrid("endEdit", rowIndex); // 先结束编辑，再把编辑后的数据
+            var rowData = $("#coursett").datagrid("getRows")[rowIndex]; // 缺点：若编辑失败，则会出现意外。
+            $("#coursett").datagrid("beginEdit", rowIndex);
+
+            rowData.isEditing = "";
+            // 发送ajax请求
+            $.ajax({
+                url: "/api/course/" + rowData.id,
+                data: rowData,
+                type: "PUT", // PUT 修改
+                dataType: "json"
+            }).done(function (data) {
+                $.messager.show({
+                    title: "info",
+                    msg: "edit over",
+                    timeout: 1000
+                });
+
+                $("#coursett").datagrid("endEdit", rowIndex);
+
+            }).fail(function (xhr, status, errormsg) {
+                // 提示保存失败
+                $.messager.show({
+                    title: "info",
+                    msg: "faied to save",
+                    timeout: 1000
+                });
+
+                $.extend(rowData, originRowData); // 当编辑出现问题时，再用深拷贝把 原始数据 深度复制回来。
+
+            })
+            // 提示成功,结束编辑状态。
+        };
+
+        function delRow(rowIndex) {
+            var rowData = $("#coursett").datagrid("getRows")[rowIndex];
+
+            // 1. 提示用户是否真删
+            $.messager.confirm({
+                title: "confirm",
+                msg: "del it, really?",
+                fn: function (r) {
+                    if (!r) {
+                        // 不删
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/course/" + rowData.id,
+                        type: "DELETE",
+                        dataType: "json",
+                    }).done(function (data) {
+                        // 把表格数据reload
+                        $("#coursett").datagrid("reload");
+
+                    }).fail(() => {
+                        $.messager.alert("info", "failed to del", "warning")
+                    });
+                }
+            })
+        };
+    </script>
+</body>
+
+</html>

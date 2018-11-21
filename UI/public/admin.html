@@ -21,13 +21,13 @@
 
 <body class="easyui-layout">
     <!-- <div id="cc" class="easyui-layout" style="width:600px; height:400px;"> -->
-    <div data-options="region:'north', title:'', iconCls: 'icon-ok', split: true" style="height: 70px;">
-        <h2 style="text-align:center; color: #44d39f">Management System</h2>
+    <div data-options="region:'north', title:'', iconCls: 'icon-ok', split: true" style="height: 60px;">
+        <div style="font-size:24px;overflow: hidden;text-align: center;padding-top: 11px;color: #ff9645">Management System</div>
     </div>
     <!-- <div data-options="region:'east', title:'East', split: true" style="width: 100px;"></div> -->
     <div data-options="region:'west', title:'Menu', split: true" style="width: 200px;">
         <div id="aa" class="easyui-accordion" data-options="fit:true" style="width:300px;height:200px;">
-            <div title="后台管理" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+            <!-- <div title="后台管理" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
                 <p><a href="#">用户管理</a></p>
                 <p><a href="#">权限管理</a></p>
                 <p><a href="#">角色管理</a></p>
@@ -39,25 +39,20 @@
             <div title="类型管理">
                 <p><a href="#">类型列表</a></p>
                 <p><a href="#">类型添加</a></p>
-            </div>
+            </div> -->
         </div>
     </div>
 
     <div data-options="region:'center', title:'', split: true" style="padding:5px; background: #eee">
         <!-- <input type="button" value="折叠左侧菜单栏" id="btnCloseNav"> -->
         <div id="tt" data-options="fit:true" class="easyui-tabs">
-            <div title="userlist" style="padding:20px;display:none;">
-                tab1
+            <div title="welcome" data-options="closable:true" style="padding:20px;display:none;">
+                welcome
                 <input type="button" value="add tab" id="addTab">
                 <input type="button" value="select tab" id="selTab">
                 <input type="button" value="read cookie" id="getCookies">
             </div>
-            <div title="tab2" style="padding:20px;display:none;">
-                tab2
-            </div>
-            <div title="tab3" style="padding:20px;display:none;">
-                tab3
-            </div>
+            
         </div>
     </div>
 
@@ -99,18 +94,60 @@
         });
 
         function initMenu() {
+            // 用事件委托方式，给其绑定点击事件
+            $("#aa").on("click",".menu_link", function (e) {
+                //
+                // $.messager.alert({
+                //     title:"ss",
+                //     msg:$(this).text()+ $(this).attr("url")
+                // })
+                // 点击左侧菜单，动态添加tab页面，或让已经存在的获得焦点
+                var title=$(this).text();
+                var isExist = $("#tt").tabs("exists",title);
+                if(isExist) {
+                    $("#tt").tabs("select",title);
+                    return;
+                }
+
+                $("#tt").tabs("add",{
+                    title: title,
+                    closable:true, // 设置可关闭
+                    href: $(this).attr("url"),
+                    iconCls: $(this).attr("iconCls")
+                })
+
+            });
+            
+            
             // 1.加载后台的数据
             $.ajax({
-                url: "/api/site_nav",
-                data:"",
-                type:"GET",
-                dataType:"json",
-                success:function (resData) {
-                    
-                } 
+                url: "/api/site_nav", // 将site_nav 当做后台数据库里的 数据，get并使用
+                data: "",
+                type: "GET",
+                dataType: "json",
+            }).done(function (resData, status, xhr) {
+                // ajax请求成功之后，执行
+                for (var i = 0; i < resData.data.length; i++) {
+                    var childHtml = [];
+
+                    for (var j = 0; j < resData.data[i].children.length; j++) {
+                        var t = resData.data[i].children[j];
+                        childHtml.push("<p><a class='menu_link' iconCls='"+t.iconCls+"' href='javascript:' url='"+ t.url +"'>" + t.title + "</a></p>");
+                    };
+
+                    // 动态添加 aa
+                    $("#aa").accordion("add", {
+                        title: resData.data[i].title,
+                        iconCls: resData.data[i].iconCls,
+                        content: childHtml.join(''),
+                        selected: false
+                    });
+                    // 动态创建子标签
+                    // 2.生成菜单数据，加到
+                };
+                // 使用2个for遍历以及用childHtml-push，麻烦。有更好的方法：用模板 ============================
             });
-            // 2.生成菜单数据，加到
-        }
+        };
 
         function back() {
 
@@ -148,8 +185,8 @@
             $("#selTab").on("click", function () {
                 $("#tt").tabs("select", "tab2");
             })
-            
-        }
+
+        };
     </script>
 </body>
 
