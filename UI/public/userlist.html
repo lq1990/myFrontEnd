@@ -9,22 +9,142 @@
     <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
     <script src="./lib/jquery-easyui-1.6.9/jquery.min.js"></script>
     <script src="./lib/jquery-easyui-1.6.9/jquery.easyui.min.js"></script>
-
+    <!-- <script src="./lib/template-web.js"></script> -->
+    <!-- 由于是admin.html导入了 db1.json文件，里面的url引到了userlist.html文件，
+        所以必须把template-web.js放到admin.html中 -->
     <title>userlist</title>
+    <style>
+        .add-dialog {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <table id="coursett">
-    </table>
+    <div class="easyui-layout" data-options="fit: true">
+        <div data-options="region: 'north'">
+            <!-- searchbox 放在北-->
+            <input id="ss" />
+            <!-- menu -->
+            <div id="mm" style="width:120px">
+                <div data-options="name:'course_name', iconCls:'icon-ok'">course name</div>
+                <div data-options="name:'college', iconCls:'icon-ok'">college</div>
+            </div>
+        </div>
+
+        <div data-options="region:'center'">
+            <!-- 表格主体放在中部 -->
+            <table id="coursett"></table>
+        </div>
 
 
+    </div>
+
+
+    <!-- 添加课程的对话框 -->
+    <div class="add-dialog" style="display:none">
+        <form id="frmAdd">
+            <table>
+                <tr>
+                    <td>
+                        course_name
+                    </td>
+                    <td>
+                        <input type="text" name="course_name" id="course_name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        author
+                    </td>
+                    <td>
+                        <input type="text" name="author" id="author">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        college
+                    </td>
+                    <td>
+                        <input type="text" name="college" id="college">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        category_Id
+                    </td>
+                    <td>
+                        <select name="category_Id" id="category_Id">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+            </table>
+        </form>
+    </div>
+
+    <!-- 显示课程详情的对话框 -->
+    <div class="info-dialog" style="display:none;">
+        <!-- <div class="tb-course-data"></div> -->
+    </div>
+
+    <script id="showInfoDialogTmpl" type="text/html">
+        <h3>more details</h3>
+        <!-- 涉及到模板的话，要放在script中 -->
+        <table>
+            <tr>
+                <td>course-id: </td>
+                <td>{{id}}</td>
+            </tr>
+            <tr>
+                <td>course-name: </td>
+                <td>{{course_name}}</td>
+            </tr>
+            <tr>
+                <td>author: </td>
+                <td id="cAut">{{author}}</td>
+            </tr>
+            <tr>
+                <td>college: </td>
+                <td id="cCol">{{college}}</td>
+            </tr>
+            <tr>
+                <td>category_Id: </td>
+                <td id="cCat">{{category_Id}}</td>
+            </tr>
+        </table>
+    </script>
 
     <script>
         $(function () {
             initTable();
+
+            initSearchBox();
         });
 
-        function initTable() {
+        function initSearchBox() {
+            $("#ss").searchbox({
+                width: 300,
+                searcher: function (value, name) {
+                    // alert(value+","+name)
+                    // console.log("ori: ",'{"'+name+'_like": "'+value+'"}')
+                    var param = $.parseJSON('{"' + name + '_like": "' + value + '"}'); // obj => json 格式转换
+                    // console.log("json: ",param);
+                    initTable(param);
+                },
+                menu: "#mm",
+                prompt: "please input value"
+
+            })
+        };
+
+        function initTable(param) {
             $("#coursett").datagrid({
                 // url: '/api/course',//rows:一页有多少条，page：请求当前页
                 title: 'userlist',
@@ -39,7 +159,7 @@
                 pageSize: 10, // 默认一页多少条
                 pageNumber: 1, // 默认显示第几页
                 pageList: [10, 20, 30],
-                queryParams: null,//让表格在加载数据的时候，额外传输的数据。
+                queryParams: param,//让表格在加载数据的时候，额外传输的数据。
                 onBeforeLoad: function (param) { // 在表格控件请求之前，可以设置相关的参数。
                     console.log("onbeforeload...");
                     param._page = param.page;
@@ -97,12 +217,67 @@
                         }
                     },
                 ]],
+                // <div class="add-dialog">
+                // <form id="frmAdd">
                 toolbar: [{
                     id: 'btnDownShelf',
                     text: '添加',
                     iconCls: 'icon-add',
                     handler: function () {
-
+                        $(".add-dialog").dialog({
+                            title: "add a user",
+                            width: 300,
+                            height: 300,
+                            resizable: true,
+                            modal: true,
+                            buttons: [
+                                {
+                                    iconCls: "icon-save",
+                                    text: "Save",
+                                    handler: function () {
+                                        var arrData = $("#frmAdd").serializeArray(); // 将表单序列化为arr ===================
+                                        arrData.push({
+                                            name: "id",
+                                            value: Date.now()
+                                        });
+                                        $.ajax({
+                                            url: "/api/course",
+                                            type: "POST",
+                                            data: arrData,
+                                            dataType: "json"
+                                        }).done(function (data) {
+                                            //1. 关闭对话框
+                                            $("#frmAdd")[0].reset;
+                                            $(".add-dialog").dialog("close");
+                                            // 2. 重载表格
+                                            $("#coursett").datagrid("reload");
+                                            // 3.  提醒用户添加成功
+                                            // $.messager.alert("info","add successfully","info");
+                                            $.messager.show({
+                                                title: "info",
+                                                msg: "add successfully",
+                                                timeout: 1000
+                                            })
+                                        }).fail(function () { // 若添加失败
+                                            $.messager.alert("info", "failed to add", "warning");
+                                        })
+                                    }
+                                },
+                                {
+                                    iconCls: "icon-no",
+                                    text: "Cancel",
+                                    handler: function () {
+                                        $.messager.confirm("info", "cancel?", function (r) {
+                                            if (!r) {
+                                                return;
+                                            }
+                                        });
+                                        $("#frmAdd")[0].reset(); // 将jQ对象转成 dom对象，然后reset
+                                        $(".add-dialog").dialog("close");
+                                    }
+                                }
+                            ]
+                        });
                     }
                 }, {
                     id: 'btnDelete',
@@ -111,10 +286,10 @@
                     handler: function () {
                         var row = $("#coursett").datagrid("getSelected");
                         if (row) {
-                            var rowIdx = $("#coursett").datagrid("getRowIndex",row);
+                            var rowIdx = $("#coursett").datagrid("getRowIndex", row);
                             delRow(rowIdx);
                         } else {
-                            $.messager.alert("info","pls click one to del","warning");
+                            $.messager.alert("info", "pls click one to del", "warning");
                         }
                     }
                 }, {
@@ -124,9 +299,9 @@
                     handler: function () {
 
                     }
-                },{
-                    id:"clearAllSelect",
-                    text:"clearAllSelections",
+                }, {
+                    id: "clearAllSelect",
+                    text: "clearAllSelections",
                     iconCls: "icon-no",
                     handler: function () {
                         $("#coursett").datagrid("clearSelections")
@@ -142,7 +317,36 @@
                 // 双击某行 或者 单机 edit 都可以进入编辑该行状态。
                 onDblClickRow: function (rowIndex, rowData) {
                     // $.messager.alert("info",row.id+"","info")
-                    $("#coursett").datagrid("beginEdit", rowIndex);
+                    // $("#coursett").datagrid("beginEdit", rowIndex);
+                    // 双击某行，弹出对话框，显示详情
+
+                    // ========== 不推荐使用的方式 ==========
+                    // $("#cid").text(rowData.id);
+                    // $("#cname").text(rowData.course_name);
+
+                    // =================推荐 art-1template =====================
+                    var html = template("showInfoDialogTmpl", rowData); // rowData里面有 id, course_name... 等信息，和上面script中 {{}}对应
+
+                    // ================== 双击row后，弹出详情 ===================
+                    $(".info-dialog").dialog({
+                        title: "details",
+                        width: 300,
+                        height: 300,
+                        content:html, //  此处html里面有信息
+                        resizable: true,
+                        modal: true,
+                        iconCls: "icon-edit",
+                        buttons: [
+                            {
+                                text: "close",
+                                iconCls: "icon-no",
+                                handler: function () {
+                                    $(".info-dialog").dialog("close")
+                                }
+                            }
+                        ]
+                    })
+
                 },
                 onBeforeEdit: function (rowIndex, rowData) {
                     // 当表格进行编辑的时候，自动执行的事件
@@ -163,7 +367,7 @@
             // 初始化分页器
             var pager = $("#coursett").datagrid("getPager");
             pager.pagination({
-                layout: ["list","sep","first","prev","sep","links","sep","next","last","sep","refresh","last"]
+                layout: ["list", "sep", "first", "prev", "sep", "links", "sep", "next", "last", "sep", "refresh", "last"]
             });
 
         };
