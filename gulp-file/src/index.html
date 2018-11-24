@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>index</title>
-    <link rel="stylesheet" href="./styles/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>index</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/metro-blue/easyui.css">
+  <link rel="stylesheet" href="./lib/jquery-easyui-1.6.9/themes/icon.css">
+  <!-- <script src="./js/index.js"></script> -->
+
+  <!-- 配合requirejs实现前端mvc架构 -->
 </head>
+
 <body>
-    <div class="box">
-        box hier
-    </div>
+  <div id="tt">
+    hello
+  </div>
+  <div class="box">
+    box hier
+  </div>
+
+  <input type="button" id="btn" value="openDialog">
+  <div class="dialog" style="display:none;">
+    <h3>learning...</h3>
+  </div>
+
+
+
+  <script src="./lib/require.js"
+    data-main="./js/controller/indexController.js"></script>
+  <!-- data-main 是requirejs的入口文件 -->
 </body>
+
 </html>

@@ -1,0 +1,1 @@
+"use strict";define(["jquery"],function(e){return{getUser:function(e){alert("getuser")}}});

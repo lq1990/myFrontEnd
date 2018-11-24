@@ -1,0 +1,1 @@
+"use strict";var a,b,c;a=1,b=2,c=3;var d="ss";c+=d,console.log(a),console.log(b),console.log(c),window.onload=function(){document.getElementById("tt").innerHTML=Date.now()};

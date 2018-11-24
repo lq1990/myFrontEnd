@@ -1,6 +1,10 @@
 $color: red;
 
 .box {
-    color: $color;
+    // color: $color;
     display: flex;
+    border: 1px solid #ccc;
+    background-color: #44d39f;
+    padding: 10px;
+    color:#fff;
 }
