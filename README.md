@@ -37,4 +37,8 @@
 .find(u => u.id == id);
 .findIndex(u => u.id == id);
 
+const fs = require("fs");
+const path = require("path");
+let filedata = fs.readFileSync(path.join(__dirname, '15_Iterator.js'), 'utf8');
+
 ```
