@@ -1,0 +1,8 @@
+$bgC: #ff9645;
+
+.box {
+    background-color: $bgC;
+    font-size: 20px;
+    display: flex; // flex 会给加上前缀
+    background: url('../assets/img/wallpaper2.jpg')
+}
