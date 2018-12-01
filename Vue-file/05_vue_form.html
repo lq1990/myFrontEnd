@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue form</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model.lazy="msg">
+        <hr>
+        <h3>文本域的双向绑定</h3>
+        <textarea name="txtname" id="txtname" cols="30" rows="10" v-model.trim="msg"></textarea>
+        <hr>
+        <h3>多选框</h3>
+        <input id="basketball" type="checkbox" v-model="basketball">
+        <label for="basketball">是否喜欢篮球</label>
+        <!-- label标签通过for 连接到id相同的input上，当点击labelcontent时，也会触发input -->
+
+        <hr>
+        <h3>多个多选框</h3>
+        1<input type="checkbox" v-model="ss" value="1">
+        2<input type="checkbox" v-model="ss" value="2">
+        3<input type="checkbox" v-model="ss" value="3">
+        {{msg}}<input type="checkbox" v-model="ss" :value="msg">
+        <hr>
+        男<input type="radio" v-model="gender" value="男">
+        女<input type="radio" v-model="gender" value="女">
+        <br>{{gender}}
+
+        <h3>多选框-下拉选择框</h3>
+        <select v-model="selectData" name="" id="">
+            <option value="" disabled>请选择</option>
+            <option :value="msg">A</option>
+            <option value="B">B</option>
+            <option>C</option>
+        </select>
+        <hr>
+        {{ selectData }}
+        <h3>多选框</h3>
+        <select name="" id="" v-model="mulData" multiple style="width:100px">
+            <option value="" disabled>select</option>
+            <option value="a">A</option>
+            <option value="b">B</option>
+            <option value="c">C</option>
+        </select>
+
+        <h3>复选框的值绑定</h3>
+        <input type="checkbox" v-model="cbData" true-value="真" false-value="假"/>
+        <!-- 注意上面用到的 true-value,false-value 都是固定的名字 -->
+        {{ cbData }}
+    </div>
+
+
+    <script>
+        let vm =new Vue({
+            el: '#app',
+            data: {
+                cbData:'',
+                msg: "aicoder.com",
+                basketball: true,
+                ss: [],
+                gender: '',
+                selectData: '',
+                mulData: []
+            }
+        })
+    </script>
+</body>
+</html>

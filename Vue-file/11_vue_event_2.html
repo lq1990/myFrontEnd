@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue event 修饰符</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <ul onclick="console.log(this)">
+            <li @click.stop.right="show(item)" v-for="(item, index) in getSortedItems" v-if="item > 10" :key="index">
+                <!-- 修饰符 .stop 阻止事件冒泡到父级 -->
+                {{item}}
+            </li>
+        </ul>
+        <hr>
+        <ul v-for="(item, index) in getLargeNums" :key="index">
+            <li>
+                {{item}}
+            </li>
+        </ul>
+
+        <div onclick="console.log('div')">
+            <a @click.prevent.stop="" href="./01_vue_attributebind.html" v-for="(item,index) of getLargeNums" :key="index">{{item}}</a>
+            <!--修饰符 .prevent 阻止默认事件 -->
+        </div>
+
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                items: [1, 9, 3, 2, 99, 10, 11, 34, 56, 32]
+            },
+            computed: { // 计算属性。当成普通属性来用，vm实例的属性
+                getSortedItems() {
+                    let t = [...this.items];
+                    // sort 会改变自身，所以需要一个深拷贝
+                    return t.sort((a, b) => a - b);
+                },
+                getLargeNums() {
+                    return this.items.filter((item, index) => item > 10)
+                }
+            },
+            methods: {
+                show(item) {
+                    console.log('item:', item);
+                    // console.log('this:', this);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

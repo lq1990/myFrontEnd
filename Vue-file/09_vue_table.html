@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue table</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.css" rel="stylesheet">
+  
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="add user" onclick="vm.UserList.push({name:'name1',age:100,address:'add'})">
+        <table class="table is-striped is-hoverable is-bordered">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>age</th>
+                    <th>address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-if="UserList.length > 0">
+                    <tr v-for="(item,index) in UserList">
+                        <td> {{index+1}} </td>
+                        <td> {{item.name}} </td>
+                        <td> {{item.age}} </td>
+                        <td> {{item.address}} </td>
+                    </tr>
+                </template>
+                <template v-else>
+                    <tr>
+                        <td colspan="4">no data</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                UserList: []
+                // [{
+                //     id: 101,
+                //     name: "anna",
+                //     age: 18,
+                //     address: "abc"
+                // }, {
+                //     id: 102,
+                //     name: "beta",
+                //     age: 18,
+                //     address: "abc"
+                // }, {
+                //     id: 103,
+                //     name: "cello",
+                //     age: 18,
+                //     address: "abc"
+                // }, {
+                //     id: 104,
+                //     name: "delta",
+                //     age: 18,
+                //     address: "abc"
+                // }, {
+                //     id: 105,
+                //     name: "eva",
+                //     age: 18,
+                //     address: "abc"
+                // }]
+            }
+        })
+    </script>
+</body>
+
+</html>

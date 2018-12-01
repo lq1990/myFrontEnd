@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue event</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <!-- 绑定事件。第一种，内联 -->
+    <p onclick="alert(this.innerHTML); console.log(this)">click here</p>
+    <!-- this指向当前p标签 -->
+
+    <!-- 绑定事件。第二种 addEventListener-->
+    <p id="pId">通过addEventListner绑定事件 onclick=fn</p>
+
+    <div id="app">
+        <p onclick="console.log(this)">
+            <!-- 内联方式绑定事件，this还是指向当前p标签 -->
+            {{age}}
+        </p>
+
+
+        <!-- vue绑定事件
+        1. 用 v-on，可以在行业直接执行操作vue实例属性的代码
+        2. v-on直接绑定一个方法 -->
+        <hr>
+        <p v-on:click="age++; name= $event.target.innerHTML">
+            <!-- 通过 v-on方式，this指向Vue实例 -->
+            <!-- 注意：html又和js一块了 -->
+            {{age}}
+            <br>
+            {{name}}
+        </p>
+        <hr>
+
+        <p v-on:click="addAge">
+            绑定方法 {{age}}
+        </p>
+
+        <hr>
+        <p v-for="(item,index) of items" :key="index" @click="show(item)">
+            <!-- @ 等价于 v-on: -->
+            {{item}}
+        </p>
+    </div>
+
+    <script>
+        window.onload = function () {
+            // 第二种方式绑定事件
+            let pid = document.getElementById('pId');
+            pid.addEventListener("click", function (e) {
+                console.log('this.innerHTML:', this.innerHTML);
+                console.log('e.target:', e.target);
+            }, false); // false: 不冒泡
+
+            // 第三种方式绑定事件
+            document.getElementById("pId").onclick = function (e) {
+
+            };
+        };
+
+
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                age: 19,
+                name: '',
+                items: [13,5,6,7]
+            },
+            methods: { // 设置方法
+                addAge(e) {
+                    console.log('e.target:', e.target);
+                },
+                show(item){
+                    console.log('item:', item);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue if</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <!-- <input type="text" v-model="ok"> -->
+        <h2 v-if="ok">good</h2>
+        <h2 v-else>bad</h2>
+
+        <hr>
+        <h3>v-else-if条件渲染</h3>
+        <p v-if="A===0">0</p>
+        <p v-else-if="A===1">1</p>
+        <p v-else>9</p>
+
+        <hr>
+        <h3>template模板</h3>
+        <template v-if="ok">
+            <!-- template: 仅用于包裹元素，不生成任何标签 -->
+            <h2>title</h2>
+            <p>content1</p>
+            <p>content2</p>
+            <p>content3</p>
+        </template>
+        <template v-else>
+            <p>no value</p>
+        </template>
+
+        <hr>
+        <h3>v-if的优化处理</h3>
+        <template v-if="A===1">
+            username: <input type="text" placeholder="input name" key="k1">
+
+        </template>
+        <template v-else>
+            email: <input type="text" placeholder="input email" key="k2">
+
+        </template>
+        <!-- 注意：上面的两个input会被重用，其实就一个。 -->
+        <!-- 若不想被重用，可加设 key -->
+
+    </div>
+
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                ok: true,
+                A: 1,
+                name: '',
+                
+            }
+        })
+    </script>
+</body>
+
+</html>

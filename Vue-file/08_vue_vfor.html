@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>v-for</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(item,index) of items" v-if="item.age>18" :key="index"> {{item.name}} -- {{item.age}} -- {{index}} </li>
+            <!-- in、of都可以。使用 :key 使得唯一辨识，提高渲染效率 -->
+        </ul>
+
+        <!-- 对一个obj进行遍历 -->
+        <p v-for="(value, key, index) in User"> {{key}}: {{value}} -- {{index}} </p>
+
+        <h3>v-for 配合 template</h3>
+        <template v-for="(value,key,index) in User">
+            <h4> {{key}} </h4>
+            <p> {{value}} </p>
+            <p>  {{index}} </p>
+        </template>
+
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data: {
+                items: [{ // 数组内容可后续 更新。用 push,pop,shift,unshift,splice,sort,reverse。默认视图更新。
+                    age: 19,
+                    name: 'aicoder'
+                },{
+                    age: 18,
+                    name: 'lq'
+                },{
+                    age:17,
+                    name:"anna"
+                }],
+                User: {
+                    age:100,
+                    name:"aicoder",
+                    phone:"110",
+                    qq:845666
+                }
+            }
+        })
+    </script>
+</body>
+</html>

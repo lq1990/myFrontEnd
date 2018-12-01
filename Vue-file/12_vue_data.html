@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue data 实例详解</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <h2 v-on:click="$set($data.user,'tt','345')">
+            <!-- 为了是vue实时更新数据，必须用vue带的方法 -->
+            <!-- $set 表示this.$set,  传三个值。
+                $data指的是 该vue实例的data
+             -->
+            {{appName}}
+        </h2>
+        <p v-for="(val, key, index) of user" :key="index">
+            {{index}}. {{key}}: {{val}}
+        </p>
+        <input type="button" value="add attr" @click="addProp">
+    </div>
+
+    <script>
+        let myVue = Vue.extend({ // 扩展默认的 Vue
+            data: function () {
+                return {
+                    appName: "aicoder.com app"
+                }
+            }
+        });
+
+        let vm = new myVue({
+            el: '#app',
+            data: {
+                user: {
+                    age: 19,
+                    name: "anna"
+                }
+            },
+            methods: {
+                addProp() {
+                    // 为了使vue跟踪变化，必须用vue带的方法。针对obj的 $set(target,k,v)
+
+                    // 方法1
+                    // this.$set(this.user,'kk','123')
+                    // 方法2，全局的方法
+                    Vue.set(this.user,'k3','999')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+<!-- 
+    在浏览器Console中，
+    vm.$set(vm.user,'k1','v1')。 可添加 k-v 对。以$开头的都是vue默认提供的方法
+ -->

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue filter</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <p>{{name}}</p>
+        <p> {{name | up}} </p>
+        <hr>
+        <p> {{demo}} </p>
+        <p> {{demo | toLC }} </p>
+        <p> {{gender | toGenderCh}} </p>
+
+        <div v-bind:id="demo | up"> {{demo}} </div>
+        <!-- 使得id的值为大写。并不改变div的content -->
+        
+        <div v-bind:id="demo | toLC"> {{demo}} </div>
+        
+    </div>
+ 
+    <hr>
+    <div id="app2">
+
+        {{name2}}
+        {{name2 | up}}
+    </div>
+
+   
+    
+    <script>
+        // 定义全局 filter
+        Vue.filter('up', function (val) { // val对应着 name
+            return val.toUpperCase();
+        })
+        
+        
+
+        // vm实例中的属性比如name、demo可直接由 vm访问. vm.name, vm.demo
+        // 若在浏览器中改变 vm.name 的值，则html标签会自动更新。双向绑定。
+        // js原始obj数据 通过vue 和dom 双向绑定。
+        let vm = new Vue({ 
+            el: '#app',
+            data: {
+                name: "aicoder",
+                demo: "Aicoder.COM",
+                gender: 0
+            },
+            filters: { // 定义vue实例的过滤器
+                toLC(val){
+                    return val.toLowerCase();
+                },
+                toGenderCh(val){
+                    return val ===1 ? '男' : '女'
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app2',
+            data: {
+                name2:"mycoder",
+            }
+        })
+    </script>
+</body>
+</html>

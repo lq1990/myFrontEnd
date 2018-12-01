@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue attribute bind</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style>
+        .act {
+            background-color: #44d39f;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <span>{{name}}</span>
+
+        <!-- vue的属性绑定, v-bind: 可简写 : -->
+        <p v-bind:id="pid" :num="number" :class="[active,ac2]">bind attr</p>
+        <!-- 用 [] 可以包含多个 -->
+
+        <p :class="[{active: isActive, c2: true},c2]">样式类绑定</p>
+        <p :class="{active: isActive, c2: true}">样式类绑定</p>
+        <!--针对绑定class而言， 当用{}括起来时，key写啥就是啥。
+            {} 与 [] 不同，
+            []里面的key并非真正的，只是一个引子，会索引到data。
+            {} 写啥就是啥 -->
+
+        <p :class="classObj">class Object</p>
+
+        <p :style="{backgroundColor: '#ff9645', 'font-size': '18px', 
+        border: '10px solid #ccc'}">内联样式绑定</p>
+        <p :style="inlineStyle">inline style</p>
+
+    </div>
+    <hr>
+    <div id="app2" :style="{'background-color':'#3f4954', color: 'white'}">
+        {{newVue}}
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                name: "aicoder.com",
+                pid: "aicoder", // 将此处的pid被绑定到上面 ，使得id="aicoder"
+                number: 19,
+                active: "act",
+                ac2: "ac22",
+                c2: "c2c2",
+                isActive: true,
+                classObj: { // 同时给俩个类。类名为 ac, text-danger。都设置为true：都用到。
+                    ac: true,
+                    "text-danger": true
+                },
+                inlineStyle: {
+                    color: "white",
+                    backgroundColor:"#f66",
+                    "font-size": "20px"
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app2',
+            data: {
+                newVue: "this is a new Vue",
+            }
+        })
+    </script>
+</body>
+
+</html>

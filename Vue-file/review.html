@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>review vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style>
+        .ccc {
+            background-color: #44d39f;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {{msg | up}}
+        <hr>
+        <div v-bind:aid="a" :bid="b" :class="{ccc,cccc}">
+            a b
+        </div>
+        <hr>
+        num: <input type="text" v-model="num">
+        <p> 2*num: {{num | f1}} </p>
+        <hr>
+        <p v-on:click="age++" :style="{'background-color': '#44d39f'}">
+            {{age}}
+        </p>
+    </div>
+
+    <script>
+        Vue.filter('f1', function (val) {
+            return val * 2;
+        });
+
+        new Vue({
+            el: '#app',
+            data: {
+                msg: "hello, world.",
+                a: "aidaid",
+                b: "bidbid",
+                ccc: "cdcd",
+                num: 10,
+                age:1,
+            },
+            filters: {
+                up(val) {
+                    return val.toUpperCase();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
