@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>component lifecycle</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>父组件的声明周期</h1>
+        <kk></kk>
+    </div>
+
+
+    <script>
+        // 定义一个子组件
+        Vue.component('kk',{
+            template: `<div>子组件</div>`,
+            beforeCreate() {
+                console.log("%c子组件 beforeCreate", "color:green;font-size:16px");
+                this.$nextTick(() => {
+                    console.log("%c子组件 nextTick", "color:green;font-size:16px");
+                })
+            },
+            created() {
+                console.log("%c子组件 created", "color:green;font-size:16px")
+            },
+            beforeMount() {
+                console.log("%c子组件 beforeMount", "color:green;font-size:16px")
+            },
+            mounted() {
+                console.log("%c子组件 mounted", "color:green;font-size:16px")
+            }
+        });
+        let vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            beforeCreate() {
+                console.log("%c父组件 beforeCreate", "color:red;font-size:20px");
+                this.$nextTick(() => {
+                    console.log("%c父组件 nextTick", "color:red;font-size:20px");
+                })
+            },
+            created() {
+                console.log("%c父组件 created", "color:red;font-size:20px")
+            },
+            beforeMount() {
+                console.log("%c父组件 beforeMount", "color:red;font-size:20px")
+            },
+            mounted() {
+                console.log("%c父组件 mounted", "color:red;font-size:20px")
+            },
+
+        })
+    </script>
+</body>
+
+</html>
+
+<!-- 
+** 父与子组件的生命周期：**
+父组件 beforeCreate
+父组件 created
+父组件 beforeMount
+
+子组件 beforeCreate
+子组件 created
+子组件 beforeMount
+子组件 mounted
+
+父组件 mounted
+父组件 nextTick
+
+子组件 nextTick 
+-->

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue component father son</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <my-com :prop="msg" @my-event="handlerEvent"></my-com>
+    </div>
+
+
+    <script>
+        // 父到子：通过props
+        // 子到父：通过事件传递数据
+
+        Vue.component('my-com',{
+            template: `<div>
+                <p @click="emitEvent">data of son</p>
+                <p> {{prop}} </p>
+            </div>`,
+            props: ['prop'],
+            methods: {
+                emitEvent(){
+                    this.$emit('my-event',12354)
+                }
+            }
+        });
+        
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "message of father"
+            },
+            methods: {
+                handlerEvent(e){
+                    console.log('e:', e);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

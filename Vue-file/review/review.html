@@ -28,9 +28,24 @@
         <p v-on:click="age++" :style="{'background-color': '#44d39f'}">
             {{age}}
         </p>
+        <hr>
+
+        <!-- 组件 -->
+        <show></show>
+        <my-com></my-com>
+        <my-com2></my-com2>
     </div>
 
     <script>
+        let Show = {
+            data: function() {
+                return {
+                    hobby: "run"
+                }
+            },
+            template: `<div> {{hobby}} </div>`
+        };
+
         Vue.filter('f1', function (val) {
             return val * 2;
         });
@@ -48,6 +63,25 @@
             filters: {
                 up(val) {
                     return val.toUpperCase();
+                }
+            },
+            components: {
+                show: Show,
+                "my-com": {
+                    data() {
+                        return {
+                            food: "noodle"
+                        }
+                    },
+                    template: `<p> {{food}} </p>`
+                },
+                "my-com2": {
+                    data: function () {
+                        return {
+                            weather: "sunny"
+                        }
+                    },
+                    template: `<p> {{weather}} </p>`
                 }
             }
         });

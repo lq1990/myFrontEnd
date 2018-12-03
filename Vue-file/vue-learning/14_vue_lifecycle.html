@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue lifecycle</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <p ref="k">
+            {{number}}
+        </p>
+    </div>
+
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                number: 123,
+            },
+            beforeCreate: function () {
+                console.log("%cbeforeCreate running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number); // 拿不到
+                console.log('this.$refs.k:', this.$refs.k);
+            },
+            created: function () {
+                console.log("%ccreated running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+
+                // 直接操作dom节点。虽然很少用
+                this.$nextTick(() => {
+                    console.log("%cnextTick",'color: #ff9645');
+                    console.log('this.$refs.k:', this.$refs.k);
+                });
+
+            },
+            beforeMount: function () {
+                console.log("%cbeforeMount running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+
+            },
+            mounted: function () {
+                console.log("%cmounted running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+
+            },
+            beforeUpdate: function () {
+                console.log("%cbeforeUpdate running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+
+            },
+            updated: function () {
+                console.log("%cupdated running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+
+            },
+            beforeDestroy: function () {
+                console.log("%cbeforeDestroy running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+            },
+            destroyed: function () {
+                console.log("%cdestroyed running...", 'color: red; font-size:20px;'); // %c 可以设置样式
+                console.log('%cthis.$el: %o', 'color:green;', this.$el); // %o 设置为obj
+                console.log('this.number:', this.number);
+                console.log('this.$refs.k:', this.$refs.k);
+            },
+
+        })
+    </script>
+</body>
+
+</html>

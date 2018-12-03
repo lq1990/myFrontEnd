@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue slot</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <g-com>这里是父组件给子组件的插槽注入的内容<h1>abcde</h1></g-com>
+        <hr>
+        <g-com></g-com>
+        <hr>
+        <h2 style="color:#f66">g-com2 component below</h2>
+        <g-com2>
+            <p slot="header">hi, i am header slot from father</p>
+            <template slot="footer">
+                <p>hi {{name}}</p>
+                <p>hi1</p>
+                <p>hi2</p>
+            </template>
+        </g-com2>
+
+        <hr>
+        <h2>组件嵌套 below</h2>
+        <g-com> g-com...
+            <g-com2>g-com2...</g-com2>
+        </g-com>
+    </div>
+
+    
+    <script>
+        Vue.component('g-com', {
+            template: `<div>
+                <p>我是子组件的内容</p>
+                <slot>子组件的默认插槽，父组件如果没有传入标签或者组件文字，就会显示当前文字</slot>
+            </div>`
+
+        });
+
+        Vue.component("g-com2",{
+            template: `<div>
+                    <h2>content of g-com2</h2>
+                    <slot name="header">header</slot>
+                    <hr>
+                    <slot name="footer">footer</slot>
+                </div>`
+                // 上面设置了 具名插槽，使用时 标注下名称
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                name: "aicoder.com"
+            }
+        })
+    </script>
+</body>
+
+</html>

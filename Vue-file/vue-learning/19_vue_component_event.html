@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue component event</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <my-com :num="msg" v-on:my-event="handlerMyEvent"></my-com>
+        <!-- 父容器中绑定 事件处理程序 -->
+    </div>
+    
+
+    <script>
+        Vue.component('my-com', {
+            template: `<div>
+            <p v-on:click='emitEvent'>我是子组件</p>
+            <p> {{num}} </p>
+            </div>`,
+            methods: {
+                emitEvent(){ // 触发子组件
+                    this.$emit('my-event',1234); // 两个参，1：event名，2：参数
+                    // 通过事件，实现子组件传递数据1234到父组件
+                }
+            },
+            props: ['num']
+        })
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                // 父组件传递数据给子组件方式：在子组件中定义props。从父组件传过去的数据不允许修改。
+                msg: 789
+            },
+            methods: {
+                handlerMyEvent(e){
+                    console.log('e:', e);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+
