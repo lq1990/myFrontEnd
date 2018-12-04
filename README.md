@@ -41,4 +41,6 @@ const fs = require("fs");
 const path = require("path");
 let filedata = fs.readFileSync(path.join(__dirname, '15_Iterator.js'), 'utf8');
 
+Object.assign(obj1, obj2); // deep-copy obj
+
 ```
