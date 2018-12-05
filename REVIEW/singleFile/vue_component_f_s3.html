@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>component father son</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+        <my-com :pro="msg" @my-event="handlerEvent">
+
+        </my-com>
+    </div>
+
+    <script>
+        Vue.component('my-com',{
+            template: `<div>
+                <p @click="emitEvent"> {{pro}} </p>
+            </div>`,
+            data(){
+                return {
+
+                }
+            },
+            props: ['pro'],
+            methods: {
+                emitEvent(){
+                    this.$emit("my-event","msg of son");
+                }
+            }
+        })
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "msg of father."
+            },
+            methods: {
+                handlerEvent(e){
+                    console.log('e:', e);
+                }
+            }
+        })
+    </script>
+  </body>
+</html>
