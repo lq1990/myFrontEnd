@@ -12,6 +12,6 @@ Vue.config.productionTip = false;
 new Vue({
   router, // 这是一种简写，实际上是 router: router。
   // 配置完router之后，所有的子实例都会有 $router(当前配置的路由器对象), $route(当前匹配的路由对象)
-  store,
+  store, // 有了store后，所有的子vue实例都可以通过 $store 拿到当前的store实例。
   render: hh => hh(App)
 }).$mount("#appp");

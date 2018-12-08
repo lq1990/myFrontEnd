@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <h1>vuex里面的num: {{$store.state.num}}</h1>
+    <input type="button" value="修改全局num++" @click="addVuexNum">&nbsp;
+    <input type="button" value="修改全局num--" @click="minusVuexNum">
     <div id="nav">
       <!-- 以下是 路由链接 -->
       <router-link to="/">Home</router-link>|
-      <router-link to="/about" tag="p">About</router-link>|
+      <router-link to="/about" tag="a">About</router-link>|
       <router-link to="/login">Login</router-link>|
       <router-link :to="UserUrl">User</router-link>|
       <router-link to="/product/11">Product</router-link>
@@ -38,6 +41,12 @@ export default {
     };
   },
   methods: {
+    addVuexNum() {
+      this.$store.commit("AddNum", 1); // 注意：用commit，而不是直接操作state或mutations
+    },
+    minusVuexNum() {
+      this.$store.commit("AddNum", -1);
+    },
     navToHome() {
       this.$router.push("/");
     },
@@ -61,17 +70,17 @@ export default {
   opacity: 1;
   transform: translateY(0px);
 }
-.rv-fade-leave {
-  opacity: 1;
-  transform: translateY(30px);
-}
-.rv-fade-leave-active {
-  transition: all 0.5s ease;
-}
-.rv-fade-leave-to {
-  opacity: 0;
-  transform: translateY(0px);
-}
+// .rv-fade-leave {
+//   opacity: 1;
+//   transform: translateY(30px);
+// }
+// .rv-fade-leave-active {
+//   transition: all 0.5s ease;
+// }
+// .rv-fade-leave-to {
+//   opacity: 0;
+//   transform: translateY(0px);
+// }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
