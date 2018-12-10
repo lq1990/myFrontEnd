@@ -15,8 +15,4 @@ export default {
 
 
 <style>
-h2 {
-  background-color: #44d39f;
-  color: rgba(255, 255, 255, 0.897);
-}
 </style>

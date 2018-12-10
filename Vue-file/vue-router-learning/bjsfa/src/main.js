@@ -4,7 +4,7 @@ import App from "./App.vue";
 
 // 将我们设置的router 引进
 import router from "./router";
-import store from "./store";
+import store from "./store/index";
 
 Vue.config.productionTip = false;
 

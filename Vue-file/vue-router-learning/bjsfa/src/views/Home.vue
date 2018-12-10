@@ -30,8 +30,8 @@ export default {
 <style lang="scss" scoped>
 .left {
   float: left;
-  width: 200px;
-  background-color: #f5fffa;
+  width: 37%;
+  // background-color: #f5fffa;
   height: 300px;
 }
 .footer {
@@ -39,6 +39,7 @@ export default {
   height: 100px;
 }
 .right {
-  margin-left: 202px;
+  float: right;
+  width: 62%;
 }
 </style>

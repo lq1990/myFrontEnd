@@ -82,6 +82,7 @@
 
 <script>
 import { MessageBox, Message } from 'element-ui';
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -102,126 +103,21 @@ export default {
         age: '',
         address: ''
       },
-      tableData: [{
-        "id": 1,
-        "name": "明",
-        "age": "100",
-        "address": "ming1"
-      },
-      {
-        "id": 10,
-        "name": "小明",
-        "age": "100",
-        "address": "ming1"
-      },
-      {
-        "id": 12,
-        "name": "name12",
-        "age": "",
-        "address": ""
-      },
-      {
-        "id": 15,
-        "name": "name1555",
-        "age": "15",
-        "address": "nameaddress"
-      },
-      {
-        "id": 16,
-        "name": "anna",
-        "age": "100",
-        "address": "abc"
-      },
-      {
-        "id": 17,
-        "age": 10,
-        "name": "ooo",
-        "address": "abc"
-      },
-      {
-        "id": 18,
-        "age": 10,
-        "name": "aaa",
-        "address": "abc"
-      },
-      {
-        "id": 19,
-        "age": 10,
-        "name": "bbb",
-        "address": "abc"
-      },
-      {
-        "id": 20,
-        "name": "anna",
-        "address": "abc",
-        "age": 10
-      },
-      {
-        "name": "lq",
-        "age": "",
-        "address": "",
-        "id": 21
-      },
-      {
-        "name": "lq",
-        "age": "",
-        "address": "",
-        "id": 22
-      },
-      {
-        "name": "lq1",
-        "age": "1",
-        "address": "add1",
-        "id": 23
-      },
-      {
-        "name": "lq2",
-        "age": "",
-        "address": "",
-        "id": 25
-      },
-      {
-        "name": "lq3",
-        "age": "",
-        "address": "",
-        "id": 26
-      },
-      {
-        "name": "lq4",
-        "age": "",
-        "address": "",
-        "id": 27
-      },
-      {
-        "name": "lq5",
-        "id": 28
-      },
-      {
-        "id": 29,
-        "name": "lq6",
-        "age": "666",
-        "address": "lq666abc"
-      },
-      {
-        "name": "new name",
-        "id": 33
-      },
-      {
-        "id": 34,
-        "name": "lqlq",
-        "age": "",
-        "address": ""
-      }] // 列表中的user信息
+      tableData: [] // 列表中的user信息
     }
   },
   methods: {
     submitAdd() {
       if (this.form.name) {
-        this.form.id = Date.now();
-        this.dialogVisible = false;
-        this.tableData.push(this.form);
-        this.form = {}
-        Message.success("add successfully");
+        axios.post('http://localhost:56789/users', this.form)
+          .then((res) => {
+            this.dialogVisible = false;
+            this.form = {}
+            this.tableData.push(res.data);
+            Message.success("add successfully");
+          }).catch((e) => {
+            Message.error("failed to add. " + e);
+          });
       } else {
         Message.warning("Name of the User is required.");
         // MessageBox.alert("Name of the User is required.");
@@ -232,30 +128,40 @@ export default {
       this.dialogVisible = false;
       this.form = {}
     },
-    cancelEdit() {
+    cancelEdit() { 
       this.dialogVisible = false;
-      this.form = {};
+      this.form={};
     },
     submitEdit() {
       let id = this.form.id;
       // db & tableData
-      let idx = this.tableData.findIndex(u => u.id == id);
-      this.tableData.splice(idx, 1, this.form);
-      this.dialogVisible = false;
-      this.form = {};
-      Message.success("edit successfully");
+      axios.put("http://localhost:56789/users/" + id, this.form).then(() => {
+        // Message.success("edit successfully");
+        let idx = this.tableData.findIndex(u => u.id == id);
+        this.tableData.splice(idx, 1, this.form);
+        this.dialogVisible = false;
+        this.form = {};
+        Message.success("edit successfully");
+      }).catch(() => {
+        Message.error("failed to edit");
+      });
     },
     handleClose() {
       this.dialogVisible = false;
     },
     delRow(row) { // row：有着这一行的数据，id,name,age,address
       let id = row.id;
-      MessageBox.confirm("delete id: " + id + ", name: " + row.name)
+      MessageBox.confirm("delete id: " + id+ ", name: "+row.name)
         .then(() => {
-          let idx = this.tableData.findIndex(u => u.id == id);
-          this.tableData.splice(idx, 1);
-          Message.success("delete successfully");
+          axios.delete("http://localhost:56789/users/" + id).then(() => {
+            let idx = this.tableData.findIndex(u => u.id == id);
+            Message.success("delete successfully");
+            this.tableData.splice(idx, 1);
+          }).catch(() => {
+            Message.error("failed to delete");
+          });
         })
+        .catch();
     },
     editRow(row) {
       this.dialogVisible = true;
@@ -266,6 +172,12 @@ export default {
       this.form.age = row.age;
       this.form.address = row.address;
     }
+  },
+  created() {
+    // 在vue实例生命周期的created，借助axios get到server 的数据。传给table
+    axios.get('http://localhost:56789/users').then((res) => {
+      this.tableData = res.data;
+    }).catch();
   }
 }
 </script>

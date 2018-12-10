@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <h1>vuex里面的num: {{$store.state.num}}</h1>
+    <h1>vuex里面的num: {{$store.state.num}} --- {{num}}</h1>
+    <p>当前的登录用户：{{$store.getters.getLoginUserName}} -- {{getLoginUserName}} </p>
+    <p @click="ChangeUName('name:'+Date.now())"> {{UName}} </p>
     <input type="button" value="修改全局num++" @click="addVuexNum">&nbsp;
     <input type="button" value="修改全局num--" @click="minusVuexNum">
     <div id="nav">
@@ -34,11 +36,28 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+
 export default {
   data() {
     return {
       UserUrl: "/user/12321"
     };
+  },
+  computed: {
+    // 放到computed的，和methods区别，是与date有关系
+    getUserURL() {
+      return this.UserUrl.toLowerCase;
+    },
+    ...mapState(["num", "LoginUser"]), // 返回的是一个obj
+    // 来自于store.js，vuex 中的state状态映射到 组件的计算属性
+
+    // ...mapState({ // 另一种写法
+    // MyNum: "num",
+    // User: state=> state.LoginUser
+    // })
+    ...mapGetters(["getLoginUserName"]),
+    ...mapState("user", ["UName"]) // 第一个参：命名空间
   },
   methods: {
     addVuexNum() {
@@ -52,7 +71,8 @@ export default {
     },
     backPage() {
       this.$router.go(-1); // 往后退 1 步，也可以设置 -2,-3
-    }
+    },
+    ...mapMutations("user", ["ChangeUName"])
   }
 };
 </script>
