@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>component</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <my-com :pro="msg" @transfer="handlerEvent">
+        </my-com>
+    </div>
+
+    <script>
+        Vue.component('my-com',{
+            template: `<div>
+               <p @click="myEvent">{{pro}}</p>
+            </div>`,
+            props: ["pro"],
+            methods:{
+                myEvent(){
+                    this.$emit("transfer",123);
+                }
+            }
+        })
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hi, vue."
+            },
+            methods: {
+                handlerEvent(e){
+                    alert(e)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

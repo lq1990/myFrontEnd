@@ -11,7 +11,7 @@
               :key="'col_'+cIndex"
             ></td>-->
             <cell
-              @clearboom = "clearBoom"
+              @clearboom="clearBoom"
               :size="{w: cellWidth, h: cellHeight}"
               :cell-data="cellArray[rIndex*cols+cIndex]"
               v-for="(colItem, cIndex) of cols"
@@ -62,19 +62,32 @@
             <el-slider v-model="cellHeight" :min="5"></el-slider>
           </div>
         </div>
+
+        <div class="reset">
+          <el-button @click="initCellData" type="primary" round>reset</el-button>
+        </div>
       </div>
     </div>
+    <play-sound src-sound="/boom.mp3"></play-sound>
+    <timer>
+
+    </timer>
   </div>
+  
 </template>
 
 <script>
 import "element-ui/lib/theme-chalk/index.css";
 import Cell from "./components/Cell.vue";
-
+import PlaySound from "./components/PlaySound.vue";
+import Timer from "./components/Timer.vue";
+import EventBus from "./eventBus.js";
 export default {
   name: "app",
   components: {
-    cell: Cell
+    cell: Cell,
+    "play-sound": PlaySound,
+    timer: Timer
   },
   data() {
     return {
@@ -86,19 +99,40 @@ export default {
       cellWidth: 40,
       cellHeight: 40,
       // {isBoom: false, numOfSurBoom: 2, isMarked: false, isClear: false}
-      cellArray: [] // 使用一维数组保存 二维上的数据
+      cellArray: [], // 使用一维数组保存 二维上的数据
+      isReset: true // 是否是重置状态
     };
   },
   created() {
     this.initCellData();
+    document.oncontextmenu = function() {
+      return false;
+    };
+    EventBus.$on("click-cell", () => {
+      this.isReset && EventBus.$emit("start_timer");
+      this.isReset = false;
+    });
+    EventBus.$on("boom-end", () => {
+      this.boomEnd();
+    });
   },
   methods: {
+    boomEnd() {
+      // 把所有雷显示，把所有非雷clear
+      this.cellArray.forEach(item => {
+        if (item.isBoom) {
+          this.$set(item, "isShowBoom", true);
+        } else {
+          this.$set(item, "isClear", true);
+        }
+      });
+    },
     clearBoom(index) {
       const innerClearBoom = cIndex => {
         if (cIndex >= 0 && cIndex < this.cellArray.length) {
           let cell = this.cellArray[cIndex];
           if (cell.isMarked || cell.isBoom || cell.isClear) return;
-          this.$set(this.cellArray[cIndex], "isClear", true);
+          this.$set(this.cellArray[cIndex], "isClear", true); // set isClear true指的是：将单元格变黑
           // 如果自己是0，继续清理。迭代
           this.clearBoom(cIndex);
         }
@@ -127,6 +161,7 @@ export default {
       this.initCellData();
     },
     initCellData() {
+      this.isReset = true; // 设置重置状态
       // 1. 初始化 Cell数组，动态随机生成对应的地雷数据。
       let sum = this.cols * this.rows;
       // 计算地雷数目
@@ -143,6 +178,7 @@ export default {
         let isBoom = randomIndexSet.has(i);
         this.cellArray.push({
           isBoom,
+          isShowBoom: false,
           numOfSurBoom,
           isMarked: false,
           isClear: false,
@@ -207,12 +243,12 @@ export default {
   }
   .main {
     flex: 5 1 500px;
-    min-height: 300px;
+    min-height: 500px;
   }
   .aside {
     margin-left: 1%;
     flex: 2 1 200px;
-    min-height: 300px;
+    min-height: 500px;
   }
   .colsrows {
     border-top: 2px solid #ff9645;
@@ -229,6 +265,10 @@ export default {
     & > .block {
       margin-top: 8px;
     }
+  }
+  .reset {
+    padding: 0;
+    margin-top: 10px;
   }
   .mine-table {
     border-collapse: collapse;
