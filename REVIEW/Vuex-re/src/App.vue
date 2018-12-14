@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <h1>vuex num: {{$store.state.num}} </h1>
-    <p>current user：{{$store.getters.getLoginUserName}} </p>
+    <h1>vuex num: {{$store.state.num}} -- {{MyNum}} </h1>
+    <p>current user：{{$store.getters.getLoginUserName}} -- {{getLoginUserName}} </p>
+    <p @click="ChangeUName(Date.now())"> UName: {{UName}} </p>
     <hr>
     <input type="button" value="vuex_num++" @click="addVuexNum">&nbsp;
     <input type="button" value="vuex_num--" @click="minusVuexNum">
@@ -15,10 +16,24 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   name: "app",
   data() {
     return {};
+  },
+  computed: {
+    getUserURL: function() {
+      // 自己的计算属性
+      return this.UserURL.toLowerCase();
+    },
+    // ...mapState(["num", "LoginUser"]) //第一种写法推荐。 把vuex中state状态映射到组件中的计算属性中
+    ...mapState({
+      MyNum: "num",
+      User: state => state.LoginUser
+    }),
+    ...mapGetters(["getLoginUserName"]),
+    ...mapState("user", ["UName"]) // 命名空间为user的 state中的数据
   },
   methods: {
     addVuexNum() {
@@ -26,7 +41,8 @@ export default {
     },
     minusVuexNum() {
       this.$store.commit("AddNum", -1);
-    }
+    },
+    ...mapMutations("user", ["ChangeUName"])
   }
 };
 </script>

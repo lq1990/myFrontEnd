@@ -6,11 +6,13 @@
     <br>
     <input type="text" v-model="num">&nbsp;
     <input type="button" value="editNumAsync" @click="editNumA">
+    <input type="button" value="editNumAsync_mapA" @click="updateNumAsync(+num)">
   </div>
 </template>
 
 <script>
 import da from "../components/DemoAbout.vue";
+import { mapActions } from "vuex";
 export default {
   name: "about",
   data() {
@@ -27,7 +29,8 @@ export default {
     },
     editNumA() {
       this.$store.dispatch("updateNumAsync", +this.num);
-    }
+    },
+    ...mapActions(["updateNumAsync"])
   }
 };
 </script>
