@@ -60,16 +60,20 @@
             <el-slider class="slider" v-model="height"></el-slider>
           </div>
         </div>
-        <div class="reset">
-          <el-button type="primary" size="mini" round>reset</el-button>
+        <div class="resetsubmit">
+          <el-button @click="submitEvent" type="primary" size="mini" round>submit</el-button>
+          <el-button @click="resetEvent" type="primary" size="mini" round>reset</el-button>
         </div>
       </div>
     </div>
+    <timer></timer>
   </div>
 </template>
 
 <script>
 import Cell from "./components/Cell.vue";
+import Timer from "./components/Timer.vue";
+import { Message } from "element-ui";
 export default {
   name: "app",
   data() {
@@ -85,9 +89,55 @@ export default {
     };
   },
   components: {
-    cell: Cell
+    cell: Cell,
+    timer: Timer
   },
   methods: {
+    submitEvent() {
+      this.$store.commit("updateEnd", "true");
+      let numOfBooms = this.rows * this.cols * 0.15 * this.getLevelNum();
+      let num_markedBoom = 0;
+      let num_marked = 0;
+      for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < this.cols; j++) {
+          if (this.cellArray[i][j].isMarked && this.cellArray[i][j].isBoom) {
+            num_markedBoom++;
+          }
+          if (this.cellArray[i][j].isMarked) {
+            num_marked++;
+          }
+        }
+      }
+      if (num_markedBoom == numOfBooms && num_marked == numOfBooms) {
+        Message.success({
+          message: "Win",
+          center: true
+        });
+      } else {
+        Message.error({
+          message: "Failed",
+          center: true
+        });
+      }
+    },
+    resetEvent() {
+      this.initCellArray();
+      this.$store.commit("updateReset", "true");
+    },
+    calcSurBooms(r, c) {
+      // 计算某个cell周围的booms数目
+      let sum = 0;
+      for (let i = r - 1; i <= r + 1; i++) {
+        for (let j = c - 1; j <= c + 1; j++) {
+          if (i < 0 || j < 0 || i >= this.rows || j >= this.cols) continue;
+
+          if (this.cellArray[i][j].isBoom) {
+            sum++;
+          }
+        }
+      }
+      return sum;
+    },
     getLevelNum() {
       switch (this.level) {
         case "Easy":
@@ -98,6 +148,33 @@ export default {
           return 3;
       }
     },
+    updateCellrc(r, c) {
+      let rArr = new Array(); // 第r行的vector
+      for (let i = 0; i < this.cols; i++) {
+        let isB = this.cellArray[r][i].isBoom;
+        let isBS = this.cellArray[r][i].isBoomShow;
+        let isM = this.cellArray[r][i].isMarked;
+        let numS = this.cellArray[r][i].numOfSurBooms;
+        let isC = this.cellArray[r][i].isClear;
+        rArr[i] = {
+          isBoom: isB,
+          isBoomShow: isBS,
+          isMarked: isM,
+          numOfSurBooms: numS,
+          isClear: isC
+        };
+        if (i == c) {
+          rArr[i] = {
+            isBoom: isB,
+            isBoomShow: isBS,
+            isMarked: isM,
+            numOfSurBooms: numS,
+            isClear: isC
+          };
+        }
+      }
+      this.$set(this.cellArray, r, rArr);
+    },
     initCellArray() {
       let numOfBooms = this.rows * this.cols * 0.15 * this.getLevelNum();
       let setOfBooms = new Set();
@@ -106,9 +183,10 @@ export default {
         let randomVal = Math.floor(Math.random() * this.rows * this.cols);
         setOfBooms.add(randomVal);
       }
-      console.log("numOfBooms:", numOfBooms);
-      console.log("setOfBooms:", setOfBooms);
+      // console.log("numOfBooms:", numOfBooms);
+      // console.log("setOfBooms:", setOfBooms);
       for (var r = 0; r < this.rows; r++) {
+        // 初始化二维数组 即cells，包含boom等信息
         this.cellArray[r] = new Array();
         for (var c = 0; c < this.cols; c++) {
           // console.log("" + r + c);
@@ -121,13 +199,25 @@ export default {
           }
           this.cellArray[r][c] = {
             isBoom: isBm,
+            isBoomShow: false,
             isMarked: false,
-            numOfSurBooms: 0
+            numOfSurBooms: 0,
+            isClear: false
           };
         }
       }
+      // 计算 每一个cell周围booms数目
+      for (let r = 0; r < this.rows; r++) {
+        for (let c = 0; c < this.cols; c++) {
+          this.cellArray[r][c].numOfSurBooms = this.calcSurBooms(r, c);
+        }
+      }
 
-      console.log("cellArray: ", this.cellArray);
+      for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < this.cols; j++) {
+          this.updateCellrc(i, j);
+        }
+      }
     }
   },
   watch: {
@@ -148,9 +238,20 @@ export default {
     level() {
       this.initCellArray();
     }
+    /*
+    cellArray(newVal) {
+      // 对于一维数组可以watch，但是二维数组不同，不能watch到某一行的具体一列的变化。
+      // 因此为了实现视图实时更新，$set 需要把某一行直接替代。
+      console.log("newVal of cellArray:", newVal);
+    }
+    */
   },
   created() {
     this.initCellArray();
+    document.oncontextmenu = () => {
+      // 右键无用
+      return false;
+    };
   }
 };
 </script>
