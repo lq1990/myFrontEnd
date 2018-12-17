@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>01 Canvas</title>
+    <style>
+      body {
+        background-color: rgb(183, 220, 233);
+      }
+      #demo {
+        /* height: 1200px;
+          width: 1200px; */
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      设置canvas标签的宽高是通过canvas标签的属性进行，不用css。
+      如果用css的话，会被拉伸 变形了
+    -->
+    <canvas id="demo" height="600" width="600">
+      IE9+ 支持canvas。若显示此行代码说明您浏览器不支持canvas，请升级浏览器。
+    </canvas>
+
+    <script>
+      window.onload = function() {
+        // 1. 拿到canvas
+        var canvas = document.querySelector('#demo');
+        canvas.style.border = '1px solid white';
+        // canvas.width = 600; // js设置。 效果等同于行内样式
+        // canvas.height = 600;
+
+        // 2. 拿到 contetxt，即拿到 api集合
+        var ctx = canvas.getContext('2d');
+        // 3. 绘制
+        ctx.moveTo(100, 100); // 移动画笔到 某个起始点, (x,y)
+        ctx.lineTo(200, 100);
+        ctx.lineTo(100, 200); // 以上三步只是 相当于将路径规划好。还需要用 stroke 将线条真正画出来
+
+        // ctx.lineTo(100, 100); // 可用closePath 进行闭合路径
+        ctx.closePath(); // 闭合路径
+
+        // 线宽 
+        ctx.lineWidth = 4; // 2px靠内，2px靠外
+        // 设置描边样式
+        ctx.strokeStyle = "blue"; // color: rgb(), rgba(), red, #
+        ctx.stroke(); // 有了路径，再描边
+
+        // 填充
+        ctx.fillStyle ="green";
+        ctx.fill();
+      };
+    </script>
+  </body>
+</html>

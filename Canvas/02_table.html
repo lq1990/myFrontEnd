@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>02 canvas table</title>
+</head>
+<body>
+    <div id="container">
+        <canvas id="cavsElem">
+    
+        </canvas>
+
+    </div>
+    
+    <script>
+        (function () {
+            var canvas = document.getElementById("cavsElem");
+            // canvas.style.border = "1px solid lightblue"
+            canvas.width = 600;
+            canvas.height=600;
+            var ctx = canvas.getContext("2d"); // 拿上下文，即取到api集合
+            ctx.lineWidth=0.5;
+            var rectH = 10;
+            rectW = 10;
+            for(var i=0;i<=canvas.height / rectH;i++){
+                ctx.moveTo(0, i*rectH);
+                ctx.lineTo(canvas.width, i*rectH);
+            }
+            for(var j=0;j<=canvas.width/rectW;j++) {
+                ctx.moveTo(j*rectW, 0);
+                ctx.lineTo(j*rectW, canvas.height);
+            }
+        
+            ctx.strokeStyle = "blue";
+            ctx.stroke()
+
+        }());
+
+        /*
+        function () {
+            
+        }; // 若不用小括号把 它包起来，则会认为是个声明、定义。而不执行
+        /*
+        var a = function () {
+            
+        };
+        a(); // 执行函数a
+        */
+    </script>
+</body>
+</html>

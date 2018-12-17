@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <h1>my Mine</h1>
+    <h1>Mine Game</h1>
+    <br>
     <div class="container">
       <div class="main">
         <cell :cellArray="cellArray" :tableData="{cols, rows, height, width}"></cell>
@@ -61,8 +62,22 @@
           </div>
         </div>
         <div class="resetsubmit">
-          <el-button @click="submitEvent" type="primary" size="mini" round>submit</el-button>
-          <el-button @click="resetEvent" type="primary" size="mini" round>reset</el-button>
+          <el-popover
+              placement="bottom"
+              width="10"
+              trigger="hover"
+              content="You'll know: Win or Lose"
+            >
+          <el-button @click="submitEvent" slot="reference" type="primary" size="mini" round>submit</el-button>
+          </el-popover>
+          <el-popover
+              placement="bottom"
+              width="50"
+              trigger="hover"
+              content="Reset Cells & Timer"
+            >
+          <el-button @click="resetEvent" slot="reference" type="primary" size="mini" round>reset</el-button>
+          </el-popover>
         </div>
       </div>
     </div>
@@ -94,8 +109,10 @@ export default {
   },
   methods: {
     submitEvent() {
-      this.$store.commit("updateEnd", "true");
-      let numOfBooms = this.rows * this.cols * 0.15 * this.getLevelNum();
+      this.$store.commit("updateSetTimer", "false");
+      let numOfBooms = Math.trunc(
+        this.rows * this.cols * 0.15 * this.getLevelNum()
+      );
       let num_markedBoom = 0;
       let num_marked = 0;
       for (let i = 0; i < this.rows; i++) {
@@ -108,6 +125,9 @@ export default {
           }
         }
       }
+      // console.log("num_markedBoom", num_markedBoom);
+      // console.log("num_marked", num_marked);
+      // console.log("numOfBooms", numOfBooms);
       if (num_markedBoom == numOfBooms && num_marked == numOfBooms) {
         Message.success({
           message: "Win",
@@ -115,7 +135,7 @@ export default {
         });
       } else {
         Message.error({
-          message: "Failed",
+          message: "Lose",
           center: true
         });
       }
@@ -123,6 +143,7 @@ export default {
     resetEvent() {
       this.initCellArray();
       this.$store.commit("updateReset", "true");
+      this.$store.commit("updateSetTimer", "false"); // 当SetTimer false是，OnOnce就会true，时钟就会真正reset
     },
     calcSurBooms(r, c) {
       // 计算某个cell周围的booms数目
@@ -176,7 +197,9 @@ export default {
       this.$set(this.cellArray, r, rArr);
     },
     initCellArray() {
-      let numOfBooms = this.rows * this.cols * 0.15 * this.getLevelNum();
+      let numOfBooms = Math.trunc(
+        this.rows * this.cols * 0.15 * this.getLevelNum()
+      );
       let setOfBooms = new Set();
       while (setOfBooms.size < numOfBooms) {
         // 从0到99随机选 15个数
@@ -190,7 +213,8 @@ export default {
         this.cellArray[r] = new Array();
         for (var c = 0; c < this.cols; c++) {
           // console.log("" + r + c);
-          let num_rc = Number("" + r + c);
+          // let num_rc = Number("" + r + c); // 这个地方有问题
+          let num_rc = r * this.cols + c;
           let isBm;
           if (setOfBooms.has(num_rc)) {
             isBm = true;
@@ -247,6 +271,10 @@ export default {
     */
   },
   created() {
+    Message.success({
+      message: "Welcome to my Mine Game!",
+      center: true
+    });
     this.initCellArray();
     document.oncontextmenu = () => {
       // 右键无用

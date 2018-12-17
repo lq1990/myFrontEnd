@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Timer</title>
+    <style>
+      body {
+        background-color: #c8c9c6;
+      }
+      h2 span {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="button" value="start" onclick="start()" />
+    <input type="button" value="stop" onclick="stop()" />
+    <input type="button" value="reset" onclick="reset()" />
+
+    <h2 id="h2"><span id="id_mm">0</span>min <span id="id_ss">0</span>sec</h2>
+
+    <script>
+      var set = 0;
+      var id_mm = document.getElementById('id_mm');
+      var id_ss = document.getElementById('id_ss');
+      var t0;
+      var setI1;
+      setInterval(function() {
+        if (set == 1) {
+          var duration = Math.trunc((Date.now() - t0) / 1000); // sec
+          var ss = duration % 60;
+          var mm = Math.trunc(duration / 60);
+          id_mm.innerHTML = mm;
+          id_ss.innerHTML = ss;
+        }
+      }, 250);
+      function start() {
+        set = 1;
+        t0 = new Date();
+      }
+      function stop() {
+        set = 0;
+        // clearInterval(setI1);
+      }
+      function reset() {
+        id_mm.innerHTML = 0;
+        id_ss.innerHTML = 0;
+      }
+    </script>
+  </body>
+</html>

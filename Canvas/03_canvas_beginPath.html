@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>03 canvas beginPath</title>
+</head>
+<body>
+    <div class="container">
+        <canvas id="cs">
+
+        </canvas>
+    </div>
+
+    <script>
+        (function () {
+            var canvas = document.getElementById("cs");
+            canvas.width = 600;
+            canvas.height=600;
+            canvas.style.border = "1px solid #222";
+
+            var ctx = canvas.getContext("2d");
+            ctx.strokeStyle = "#f66";
+            ctx.lineWidth = 20;
+
+            
+            
+            // 第一条线
+            ctx.beginPath(); // 第一条线可不加beginPath，但规范起见，加。
+            ctx.moveTo(100,100);
+            ctx.lineTo(300,100);
+            ctx.stroke();
+
+            // 第二条线
+            ctx.beginPath();
+            ctx.moveTo(100,200);
+            ctx.lineTo(300,200);
+            ctx.strokeStyle = "#44d39f"; // 若不设置新的颜色，会继承上面的
+            ctx.stroke();
+
+            // 第3条线
+            ctx.beginPath();
+            ctx.moveTo(100,300);
+            ctx.lineTo(300,300);
+            ctx.strokeStyle = "#ff9645";
+            ctx.stroke();
+
+
+        })();
+    </script>
+</body>
+</html>

@@ -46,9 +46,13 @@ export default {
   },
   methods: {
     mousedownRightEvent(r, c) {
+      if (this.$store.state.isSetTimer == "false") {
+        // 不计时时，才会置OnOnce true。
+        // 一旦计时开始，就不执行这个
+        this.$store.commit("updateOnOnce", "true");
+      }
+      this.$store.commit("updateSetTimer", "true");
       this.$store.commit("updateReset", "false");
-      this.$store.commit("updateStart", "true");
-      this.$store.commit("updateEnd", "false");
 
       // 右键功能：标记小旗。如果所有booms都被标记为小旗，而且非booms不会被标记小旗则获胜。
       // this.cellArray[r][c].isMarked = true; // 这样改不会同步，需要用 $set
@@ -158,10 +162,14 @@ export default {
       }
     },
     mousedownLeftEvent(r, c) {
+      if (this.$store.state.isSetTimer == "false") {
+        // 不计时时，才会置OnOnce true。
+        // 一旦计时开始，就不执行这个
+        this.$store.commit("updateOnOnce", "true");
+      }
+      this.$store.commit("updateSetTimer", "true");
       this.$store.commit("updateReset", "false");
-      this.$store.commit("updateStart", "true");
-      this.$store.commit("updateEnd", "false");
-      console.log(r, c, this.cellArray[r][c]);
+      // console.log(r, c, this.cellArray[r][c]);
       // 如果点击的是boom，则直接退出游戏
       if (this.cellArray[r][c].isBoom) {
         // game over，显示所有booms
@@ -174,7 +182,7 @@ export default {
           message: "Game Over!",
           center: true
         });
-        this.$store.commit("updateEnd", "true");
+        this.$store.commit("updateSetTimer", "false");
       } else {
         // 点左键时，把数字显示 isClear
         // 如果数字为0，则把周围所有是0的都显示，迭代
@@ -191,11 +199,11 @@ export default {
     background-color: #3f4954;
   }
   .boom {
-    background-image: url("/mine.png") !important;
+    background-image: url("../assets/mine.png") !important;
     background-size: cover;
   }
   .mark {
-    background-image: url("/flag.png") !important;
+    background-image: url("../assets/flag.png") !important;
     background-size: cover;
   }
   td {

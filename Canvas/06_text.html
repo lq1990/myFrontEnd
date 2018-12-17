@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>05 arc</title>
+  </head>
+  <body>
+    <canvas id="cs"> </canvas>
+
+    <script>
+      var canvas = document.getElementById('cs');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 600;
+      canvas.style.border = '1px solid #666';
+
+      //   ctx.moveTo(100, 100);
+      //   ctx.arc(100, 100, 50, 0, (Math.PI * 30) / 180, true);
+      //   ctx.closePath();
+      //   ctx.fillStyle = 'lightblue';
+      //   ctx.fill();
+      //   ctx.stroke();
+      /*
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 150, Math.PI / 180 * -90, Math.PI / 180 * -10);
+      ctx.closePath();
+      ctx.fillStyle='#44d39f';
+      ctx.fill();
+      ctx.strokeStyle="white";
+      ctx.stroke()
+      
+      ctx.beginPath();
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 150, Math.PI / 180 * -10, Math.PI / 180 * 30);
+      ctx.closePath();
+      ctx.fillStyle='#ff9645';
+      ctx.fill();
+      ctx.strokeStyle="white";
+      ctx.stroke()
+      
+      ctx.beginPath();
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 150, Math.PI / 180 * 30, Math.PI / 180 * 100);
+      ctx.closePath();
+      ctx.fillStyle='#f66';
+      ctx.fill();
+      ctx.strokeStyle="white";
+      ctx.stroke()
+
+      ctx.beginPath();
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 150, Math.PI / 180 * 100, Math.PI / 180 * -90);
+      ctx.closePath();
+      ctx.fillStyle='#66f';
+      ctx.fill();
+      ctx.strokeStyle="white";
+      ctx.stroke()
+      */
+
+      var data = [
+        {
+          value: 0.2,
+          color: '#44d39f',
+          title: '应届生'
+        },
+        {
+          value: 0.3,
+          color: '#ff9645',
+          title: '社会招生'
+        },
+        {
+          value: 0.4,
+          color: '#f66',
+          title: '老学员推荐'
+        },
+        {
+          value: 0.1,
+          color: '#9645ff',
+          title: '公开课'
+        }
+      ];
+      var sAngle = -90;
+      var x0 = 300, y0=300;
+      var r = 150;
+      for (var i = 0; i < data.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        var Angle = data[i].value * 360; // 当前扇形的角度
+        var endAngle = sAngle + Angle;
+        ctx.arc(
+          x0,
+          y0,
+          r,
+          (Math.PI / 180) * sAngle,
+          (Math.PI / 180) * endAngle
+        );
+        sAngle = endAngle;
+        ctx.fillStyle = data[i].color;
+        ctx.fill();
+        ctx.strokeStyle="white";
+        ctx.stroke();
+      }
+    </script>
+  </body>
+</html>

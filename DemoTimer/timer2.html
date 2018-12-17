@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Timer2</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <input type="button" value="start" onclick="start()">
+    <input type="button" value="stop" onclick="stop()">
+    <input type="button" value="reset" onclick="reset()">
+    <h2>
+        <span id="idmin">0</span>min
+        <span id="idsec">0</span>sec
+    </h2>
+
+    <script>
+        var set, t0, mm, ss;
+        var idmin = document.getElementById("idmin");
+        var idsec = document.getElementById("idsec");
+
+        setInterval(() => {
+            if(set == 1){
+                var duration = Math.trunc((Date.now() - t0)/1000);
+                ss = duration % 60;
+                mm = Math.trunc( duration / 60);
+                idmin.innerHTML = mm;
+                idsec.innerHTML = ss;
+            }
+        }, 200);
+        function start(){
+            set = 1;
+            t0 = new Date();
+        }
+        function stop(){
+            set = 0;
+        }
+        function reset(){
+            idmin.innerHTML = 0;
+            idsec.innerHTML = 0;
+        }
+    </script>
+</body>
+</html>

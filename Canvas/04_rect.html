@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>04 rect</title>
+</head>
+<body>
+    <canvas id="cs">
+
+    </canvas>
+    
+
+    <script>
+        window.onload = function () {
+            var canvas = document.getElementById("cs");
+            var ctx = canvas.getContext("2d");
+
+            canvas.width=600;
+            canvas.height=600;
+            canvas.style.border = "1px solid #44d39f";
+
+            ctx.rect(100,100,50,70); // (x,y,w,h)
+            ctx.stroke();
+
+            // 描边矩形
+            ctx.strokeRect(200,200,100,150);
+            
+            // 填充矩形
+            ctx.fillRect(300,300,100,100);
+            
+            // 清除矩形。将设置的矩形范围内清除
+            ctx.clearRect(360 , 360, 70, 70);
+            
+
+        }
+    </script>
+</body>
+</html>
