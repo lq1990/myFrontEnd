@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>review1</title>
+</head>
+<body>
+    <canvas id="cs"></canvas>
+
+    <script>
+        var canvas = document.getElementById("cs");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid #666";
+
+        ctx.moveTo(100, 300);
+        ctx.lineTo(100, 100);
+        ctx.lineTo(90,110);
+        ctx.moveTo(100,100);
+        ctx.lineTo(110,110);
+        
+        ctx.moveTo(100,300);
+        ctx.lineTo(500,300);
+        ctx.lineTo(490,290);
+        ctx.moveTo(500,300);
+        ctx.lineTo(490,310);
+        
+        ctx.stroke();
+
+        ctx.beginPath();
+        var data = [.5, .8,.3,.5,.9,.1];
+        var dx = (500-100)/(data.length+1);
+        var yy = 300-100;
+        // ctx.moveTo(100, 300);
+        for(var i=0;i<data.length;i++){
+            ctx.lineTo(100+dx*(i+1), 300- yy*data[i]);
+        }
+
+    
+        
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        ctx.font='30px sans-serif';
+        ctx.fillStyle='#44d39f';
+        ctx.fillText("折线图", 250, 100);
+        
+        
+    </script>
+</body>
+</html>

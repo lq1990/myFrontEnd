@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>oop</title>
+  </head>
+  <body>
+    <script>
+      // ============ 创建对象的方式： ================
+      // 1. json。用处：从后台拿来的数据，用此来临时存储数据。
+    //   缺点：临时用可以。但不能以此为模板，不能通过new构造一个新obj。
+      // var o = {key: val};
+      // var arr = [1,2,3,{}];
+
+      var o = {
+        name: 'itcast',
+        age: 18,
+        sayHi: function() {
+          console.log('hi, I am' + this.name + ' ' + this.age);
+        }
+      };
+
+      // 给json对象添加属性.动态添加。
+      o.color = 'red';
+      o.show = function() {};
+
+      // 2. 也不推荐
+      var o2 = new Object();
+      o2.age = 10;
+      o2.show = function() {};
+
+      // 3. 推荐。
+      function Cat() {
+        // var t = {};
+        // this = t;
+        // t.__proto__ = Cat.prototype;
+
+          this.age = 18;
+          this.show=function(){
+              console.log("show...");
+          }
+
+        //   return t;
+      }
+
+      var cat = new Cat(); // 通过构造函数 构造一个对象出来。
+      cat.show();
+    //   new 内部原理：
+    //   第一步：创建一个空对象
+    //   第二步：把this指向到这个空对象
+    //   第三步：把空对象的内部原型指向构造函数的原型对象
+    // 第四部；当构造函数执行完成后，如果没有return，就把当前的空对象返回
+
+      function Bird() {
+          this.age=99;
+          this.show=function(){
+
+          };
+          return { // 若有了return，则上面的age show就没用了。
+              demo: "123"
+          }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>10 OOP 创建对象升级</title>
+  </head>
+  <body>
+    <script>
+      // 考虑到show方法对于每个实例而言，逻辑一样。把show方法放到 原型上。
+      /*
+        function Cat() {
+            this.age = 10;
+            this.show=function(){
+                console.log("show...");
+            }
+        }
+
+        var cat = new Cat();
+        var cat1 = new Cat();
+        
+        // ==================升级======================
+        function Cat() {
+            this.age=10;
+        }
+        Cat.prototype.show = function () {
+            console.log(this.age);
+        }
+
+        var cat = new Cat();
+        cat.age = 1;
+        var cat1 = new Cat();
+        
+        cat.show();
+        cat1.show();
+
+        // cat.__proto__ === Cat.prototype
+
+        // ===================再升级=====================
+        function Cat(age) {
+            this.age = age;
+        }
+
+        Cat.prototype.show=function(){}
+
+      // ===================再升级========================
+      function Cat(obj) {
+        this.age = obj.age;
+        this.x = obj.x;
+      }
+      Cat.prototype.show = function() {
+        console.log(this.age, this.x);
+      };
+
+      var cat = new Cat({
+        age: 1,
+        x: 11
+      });
+      cat.show();
+*/
+      // ==================再升级===========================
+      function Cat(option) {
+        this._init(option);
+      }
+      Cat.prototype = {
+        _init: function(option) {
+          this.age = option.age || '';
+        },
+        show: function() {
+          console.log(this);
+        }
+      };
+
+      var c = new Cat({
+        age: 123,
+        // show2: function() {
+        //     console.log("show2");
+        // }
+      });
+      c.show3 = function () { // 将show3 动态添加到c上。
+          console.log("show3...");
+      }
+      c.show();
+    </script>
+  </body>
+</html>

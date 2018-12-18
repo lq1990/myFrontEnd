@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>05 arc</title>
+    <title>06 arc text</title>
   </head>
   <body>
     <canvas id="cs"> </canvas>
@@ -71,21 +71,23 @@
           title: '社会招生'
         },
         {
-          value: 0.4,
-          color: '#f66',
-          title: '老学员推荐'
-        },
-        {
           value: 0.1,
           color: '#9645ff',
           title: '公开课'
+        },
+        {
+          value: 0.4,
+          color: '#f66',
+          title: '老学员推荐'
         }
       ];
       var sAngle = -90;
-      var x0 = 300, y0=300;
+      var x0 = 300,
+        y0 = 300;
       var r = 150;
+      var rt = 1.1 * r;
       for (var i = 0; i < data.length; i++) {
-        ctx.beginPath();
+        ctx.beginPath(); // 切记加 beginPath()
         ctx.moveTo(x0, y0);
         var Angle = data[i].value * 360; // 当前扇形的角度
         var endAngle = sAngle + Angle;
@@ -96,12 +98,56 @@
           (Math.PI / 180) * sAngle,
           (Math.PI / 180) * endAngle
         );
-        sAngle = endAngle;
         ctx.fillStyle = data[i].color;
         ctx.fill();
-        ctx.strokeStyle="white";
+        ctx.closePath();
+        ctx.strokeStyle = 'white';
         ctx.stroke();
+
+        var xt =
+          x0 + rt * Math.cos((((sAngle + endAngle) / 2) * Math.PI) / 180);
+        var yt =
+          y0 + rt * Math.sin(((+(sAngle + endAngle) / 2) * Math.PI) / 180);
+        ctx.font = '16px sans-serif';
+
+        var middleAngle = (sAngle + endAngle) / 2;
+        if (
+          (middleAngle < 270 && middleAngle > 90) ||
+          (middleAngle < -90 && middleAngle > -270)
+        ) {
+          ctx.textAlign = 'right'; // 当文本在 饼图左侧时，文本对齐为end
+          ctx.fillText(data[i].value * 100 + '% ' + data[i].title, xt, yt);
+        } else {
+          // ctx.textAlign = 'start'; // 默认对齐为start
+          ctx.fillText(data[i].value * 100 + '% ' + data[i].title, xt, yt);
+        }
+
+        // ctx.beginPath();
+        // ctx.moveTo(x0,y0);
+        // ctx.lineTo(xt, yt);
+        // ctx.strokeStyle="red";
+        // ctx.stroke();
+
+        sAngle = endAngle;
       }
+
+      ctx.beginPath();
+      ctx.fillStyle = 'black';
+      // ctx.moveTo(100,100);
+      ctx.font = '20px sans-serif';
+      ctx.textAlign = 'center';
+      // 测量指定文本，返回width obj
+      var len = ctx.measureText("text");
+      ctx.fillText(len.width+' 学员统计', 300, 100);
+
+      ctx.beginPath();
+      ctx.moveTo(500, 500);
+      ctx.arc(500, 500, 100, 0, 2);
+      ctx.fillStyle = 'lightblue';
+      ctx.fill();
+      ctx.closePath();
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
     </script>
   </body>
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>13 function call</title>
+</head>
+<body>
+    
+    <script>
+        /*
+        // =============== 1. 函数 执行模式 =============================
+        function add(a,b){
+            console.log(this); // this === window
+            return a+b;
+        }
+        add(1,2);
+        window.add(1,2); // this还是指向window
+
+        // ================ 2. 对象方法 的调用模式============================
+        function Cat() {
+            this.show = function () {
+                console.log(this); 
+            }
+        }
+        var c = new Cat();
+        c.show() // 对象调用自己的方法，那么this指向自己，即 this===c
+
+        // 注：所有的事件响应方法都是 对象方法的调用模式。比如 btn.onlick, .onload ，因此可用this指向原对象
+*/
+        // ================= 3. 构造器 的调用模式 =========================
+        function Cat() {
+            this.show=function(){
+                console.log(this); // this 指向构造出来的对象
+            }
+        }
+        var c = new Cat(); // 构造时，this指向 构造出来的对象
+    </script>
+</body>
+</html>

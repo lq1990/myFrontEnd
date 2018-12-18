@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>08 canvas animation</title>
+  </head>
+  <body>
+    <canvas id="cs"></canvas>
+    <br>
+    <button id="down">down</button>
+    <button id="left">left</button>
+    <button id="right">right</button>
+    <button id="up">up</button>
+
+    <script>
+      var canvas = document.getElementById('cs');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 600;
+      canvas.style.border = '1px solid #666';
+
+      var dirIndex = 0;
+      var img = new Image(); // 新建Image 实例
+      img.src = './img/man.jpg'; // 设置img路径
+      img.onload = function() { // 加载成功后
+        var imgW = img.width;
+        var imgH = img.height;
+        var i = 0;
+        setInterval(() => {
+            // 清除之前的图片墨迹
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            // canvas.width = canvas.width; // 重新设置画布宽高后，也会实现重置清空。
+            
+            ctx.drawImage(
+                img, // image dom
+                (imgW / 4) * i, // 截取img中 x坐标
+                imgH / 4 * dirIndex, // 截取img中y坐标
+                imgW / 4, // 截取width
+                imgH / 4, // 截取height
+                100,        // 放置位置 x
+                100,       // 放置位置 y
+                imgW / 4,  // 放置img的width
+                imgH / 4   // 放置img的height
+                );
+                i++;
+                i %= 4;
+            }, 200);
+      };
+
+        
+      var btnLeft = document.getElementById("left");
+      btnLeft.onclick = function () {
+        dirIndex = 1;
+      }
+      var btnRight = document.getElementById("right");
+      btnRight.onclick = function () {
+        dirIndex = 2;
+      }
+      var btnUp = document.getElementById("up");
+      btnUp.onclick = function () {
+        dirIndex = 3;
+      }
+      var btnDown = document.getElementById("down");
+      btnDown.onclick = function () {
+        dirIndex = 0;
+      }
+    </script>
+  </body>
+</html>

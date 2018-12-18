@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>12 oop use</title>
+</head>
+<body>
+    <canvas id="cs"></canvas>
+
+    <script>
+        // var canvas = document.getElementById("cs");
+        // var ctx = canvas.getContext("2d");
+        // canvas.width = 600;
+        // canvas.height = 600;
+        // canvas.style.border ="1px solid #666";
+/*
+        function Sprite() {
+            this.name = "anna";
+            this.age=1;
+
+        }
+        // 在原型上添加方法。
+        Sprite.prototype.show=function(){
+            console.log(this);
+        }
+
+        var s = new Sprite();
+        s.name = "beta";
+        s.show();
+
+        // ===============升级========================
+        function Sprite(name,age) {
+            this.name=name;
+            this.age=age;
+        }
+        Sprite.prototype.show = function(){
+            console.log(this);
+        }
+
+        var s = new Sprite("n1","11");
+        s.show();
+
+        // ===============升级========================
+        function Sprite(option) {
+            this.name=option.name;
+            this.age=option.age;
+        }
+        Sprite.prototype.show = function(){
+            console.log(this);
+        }
+
+        var s = new Sprite({
+            name:"celle",
+            age:22
+        });
+        s.show();
+*/
+        // ==============升级=======================
+        function Sprite(option) {
+            this._init(option);
+        }
+        Sprite.prototype = {
+            show: function () {
+                console.log(this);
+            },
+            _init: function (option) {
+                this.name = option.name;
+                this.age = option.age;
+            }
+        }
+        var s = new Sprite({
+            // name: "delta",
+            // age: 99
+        });
+        s.show()
+
+    </script>
+</body>
+</html>
