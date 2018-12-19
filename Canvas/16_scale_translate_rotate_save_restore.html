@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>16 canvas</title>
+  </head>
+  <body>
+    <canvas id="cs"></canvas>
+
+    <script>
+      var canvas = document.getElementById('cs');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 800;
+      canvas.height = 800;
+      canvas.style.border = '1px solid #666';
+
+      ctx.fillStyle = 'red';
+      ctx.fillRect(10, 10, 100, 100);
+
+      ctx.save(); // 把当前上下文保存
+
+      ctx.translate(200, 200);
+      ctx.rotate((30 * Math.PI) / 180);
+      ctx.scale(2, 2);
+      ctx.globalAlpha = 0.3;
+
+      ctx.moveTo(0, 0);
+      ctx.lineTo(400, 0);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, 400);
+      ctx.stroke();
+      ctx.fillStyle = "green";
+      ctx.fillRect(10, 10, 40, 40);
+
+      ctx.restore(); // 把上一次save的状态还原
+      ctx.fillStyle = "blue";
+      ctx.fillRect(30,30,200,100);
+    </script>
+  </body>
+</html>

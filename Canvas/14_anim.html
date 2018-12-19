@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>14 anim oop pkg</title>
+    <script src="./js/Sprite.js"></script>
+  </head>
+  <body>
+    <canvas id="cs"></canvas>
+    <br>
+    <button id="left">left</button> <button id="right">right</button>
+    <button id="up">up</button> <button id="down">down</button>
+
+    <script>
+      var canvas = document.getElementById('cs');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 600;
+      canvas.style.border = '1px solid #666';
+
+      var s = new Sprite({
+        x: 300,
+        y: 300,
+        w: 76,
+        h: 122,
+        cutW: 76,
+        cutH: 122,
+        fps: 4,
+        _dirIndex: 0,
+        imgSrc: './img/man.jpg'
+      });
+      console.log(s);
+      s.render(ctx);
+
+      var btnleft = document.getElementById('left');
+      btnleft.onclick = function() {
+        s.changeDir('left');
+      };
+      var btnright = document.getElementById('right');
+      btnright.onclick = function() {
+        s.changeDir('right');
+      };
+      var btnup = document.getElementById('up');
+      btnup.onclick = function() {
+        s.changeDir('up');
+      };
+      var btndown = document.getElementById('down');
+      btndown.onclick = function() {
+        s.changeDir('down');
+      };
+      
+
+      //   封装一个对象出来
+      //   属性： width, height, imgSrc, speed, dir
+      //   方法：render, changeDir
+
+      /*
+        var dirIndex = 0;
+        var img = new Image();
+        img.src = '../img/man.jpg';
+        img.onload = function() {
+          var frameIndex = 0;
+          setInterval(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(
+              img,
+              (frameIndex * img.width) / 4,
+              (dirIndex * img.height) / 4,
+              img.width / 4,
+              img.height / 4,
+              200,
+              200,
+              img.width / 4,
+              img.height / 4
+            );
+
+            frameIndex++;
+            frameIndex %= 4;
+          }, 200);
+        };
+        */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>17 rect oop</title>
+    <script src="./js/myRect.js"></script>
+  </head>
+  <body>
+    <canvas id="cs"></canvas>
+    <canvas id="cs2"></canvas>
+
+    <img src="" id="imgId" alt="">
+    
+    <script>
+      var canvas = document.getElementById('cs');
+      var ctx = canvas.getContext('2d');
+      var canvas2 = document.getElementById('cs2');
+      var ctx2 = canvas2.getContext('2d');
+
+      canvas.width = 600;
+      canvas.height = 600;
+      canvas.style.border = "1px solid #666";
+      
+      canvas2.width = 600;
+      canvas2.height = 600;
+      canvas2.style.border = "1px solid #666";
+      var r = new myRect({
+        x: 100,
+        y: 100,
+        w: 100,
+        h: 100,
+        opacity: .6,
+        scaleX:1.5,
+        fillStyle: "#44d39f",
+        strokeStyle: "#f66",
+        rotation: 100
+      });
+      console.log(r);
+      r.render(ctx);
+
+    //   for(var i=0;i<100;i++){
+    //       var r = new myRect({
+    //           x: Math.random()*500,
+    //           y: Math.random()*500,
+    //           w: Math.random()*20,
+    //           h: Math.random()*20,
+    //         //   rotation: Math.random()*90,
+    //           opacity: Math.random()
+    //       });
+    //       r.render(ctx);
+    //   }
+
+      // 把canvas转换成 图片
+      console.log(canvas.toDataURL("image/jpeg",1));
+      
+    //   var img = document.getElementyId("imgId");
+    //   img.src = canvas.toDataURL("image/png");
+
+    setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        r.x +=10;
+        r.render(ctx);
+
+        ctx2.drawImage(canvas, 0, 0);
+        
+        
+    }, 200);
+    </script>
+  </body>
+</html>
