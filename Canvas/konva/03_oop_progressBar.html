@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>03 oop progressBar</title>
+    <script src="./konva.min.js"></script>
+    <script src="./ProgressBar.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script>
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      var layer = new Konva.Layer();
+      stage.add(layer);
+
+      var pb = new ProgressBar({
+        x: 100,
+        y: 100,
+        w: 500,
+        h: 100,
+        fillStyle: 'orange',
+        strokeStyle: 'lightblue'
+      });
+      pb.addToGroupOrLayer(layer);
+      
+      layer.draw();
+      pb.changeValue(.5)
+    </script>
+  </body>
+</html>

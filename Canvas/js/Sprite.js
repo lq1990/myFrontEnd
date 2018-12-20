@@ -1,3 +1,4 @@
+// 小精灵：动画小人
 function Sprite(option) {
   this._init(option);
 }

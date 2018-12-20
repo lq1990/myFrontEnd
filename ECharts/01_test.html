@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>echarts</title>
+    <script src="./js/echarts.js"></script>
+    <script src="./js/shine.js"></script>
+    <script src="./js/vintage.js"></script>
+    <style>
+        #main {
+            border: 1px solid red;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="main" style="width: 600px; height: 400px"></div>
+
+    <script>
+      var myChart = echarts.init(document.getElementById('main'),"vintage");
+      var option = {
+        title: {
+          text: 'echarts demo'
+        },
+        tooltip: {},
+        legend: {
+            data: ["sales"]
+        },
+        xAxis: {
+          data: ['anna', 'beta', 'celle', 'delta', 'eva', 'follow']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: 'sales',
+            type: 'bar',
+            data: [5, 20, 35, 10, 10, 20]
+          }
+        ]
+      };
+
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>

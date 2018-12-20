@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>02 progress bar</title>
+    <script src="./konva.min.js"></script>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        background-color: #dddca9;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script>
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      var layer = new Konva.Layer();
+      stage.add(layer);
+
+      // 中心点坐标
+      var cenX = stage.width() / 2; // 注意：宽高为方法
+      var cenY = stage.height() / 2;
+
+      // 绘制进度条
+      var x = (1 / 8) * stage.width();
+      var y = cenY;
+      var height = (1 / 12) * stage.height();
+      var maxWidth = (3 / 4) * stage.width();
+
+      var innerRect = new Konva.Rect({
+        x: x,
+        y: y,
+        width: height,
+        height: height,
+        opacity: 0.7,
+        fill: '#44d', // 填充
+        cornerRadius: height / 2
+      });
+
+      layer.add(innerRect);
+
+      var outerRect = new Konva.Rect({
+        x: x,
+        y: y,
+        width: maxWidth,
+        height: height,
+        opacity: 0.5,
+        stroke: '#44d', // 描边
+        strokeWidth: 2,
+        cornerRadius: height / 2
+      });
+
+      layer.add(outerRect);
+
+      layer.draw();
+
+      // 加载图片
+      var loadImgIndex = 0;
+      var imgSrcArray = ['1.png', '2.png'];
+      for (var i = 0; i < imgSrcArray.length; i++) {
+        var img = new Image();
+        img.src = imgSrcArray[i];
+        img.onload = function() {
+          loadImgIndex++;
+
+          // Konva 动画
+          innerRect.to({
+            width: maxWidth * (loadImgIndex/imgSrcArray.length),
+            duration: 1.4,
+            // opacity: 0.7,
+            easing: Konva.Easings.StrongEaseInOut
+          });
+        };
+      }
+    </script>
+  </body>
+</html>

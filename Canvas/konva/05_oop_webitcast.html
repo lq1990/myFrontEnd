@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>05 oop webitcast</title>
+    <script src="../js/konva.min.js"></script>
+    <script src="../js/CircleText.js"></script>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script>
+      var stage = new Konva.Stage({
+        container: 'container',
+        x: 0,
+        y: 0,
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+      var cenX = stage.width() / 2;
+      var cenY = stage.height() / 2;
+
+      var bgLayer = new Konva.Layer();
+      stage.add(bgLayer);
+
+      // =============  背景层 =================
+      var innerRadius = 252 / 2;
+      var outerRadius = 220;
+      var innerCircle = new Konva.Circle({
+        x: cenX,
+        y: cenY,
+        radius: innerRadius,
+        stroke: '#aaaa86',
+        strokeWidth: 2,
+        dash: [10, 4] // 设置虚线，10实4虚
+      });
+      bgLayer.add(innerCircle);
+
+      var outerCircle = new Konva.Circle({
+        x: cenX,
+        y: cenY,
+        radius: outerRadius,
+        stroke: '#a5a581',
+        strokeWidth: 2,
+        dash: [10, 4] // 设置虚线，10实4虚
+      });
+      bgLayer.add(outerCircle);
+
+      // ===============中心圆=====================
+      var cenCircleText = new CircleText({
+        x: cenX,
+        y: cenY,
+        innerR: 132 / 2,
+        fontSize: 18,
+        outerR: 90,
+        text: 'Web FS',
+        innerStyle: '#525ab2',
+        outerStyle: '#e1e1e1'
+      });
+      cenCircleText.addToGroupOrLayer(bgLayer);
+
+      bgLayer.draw();
+
+      // =====================================================
+      // ============= 第二环 =================
+      var animateLayer = new Konva.Layer();
+      stage.add(animateLayer);
+
+      var L2Group = new Konva.Group({
+        x: cenX,
+        y: cenY
+      });
+
+      var L2_CircleText_CSS3 = new CircleText({
+        x: innerRadius * Math.cos((120 * Math.PI) / 180),
+        y: innerRadius * Math.sin((120 * Math.PI) / 180),
+        innerR: 30,
+        fontSize: 12,
+        outerR: 40,
+        innerStyle: '#f66',
+        outerStyle: '#e1e1e1',
+        text: 'CSS3'
+      });
+      L2_CircleText_CSS3.addToGroupOrLayer(L2Group);
+
+      var L2_CircleText_HTML5 = new CircleText({
+        x: innerRadius * Math.cos((240 * Math.PI) / 180),
+        y: innerRadius * Math.sin((240 * Math.PI) / 180),
+        innerR: 30,
+        fontSize: 12,
+        outerR: 40,
+        innerStyle: '#44d39f',
+        outerStyle: '#e1e1e1',
+        text: 'HTML5'
+      });
+      L2_CircleText_HTML5.addToGroupOrLayer(L2Group);
+      // 把第二层的组添加到 动画层
+      animateLayer.add(L2Group);
+      // ==================== 第三环 =========================
+      // 创建一个3环的组
+      var L3Group = new Konva.Group({
+        x: cenX,
+        y: cenY
+      });
+      var L3_CircleText_JS = new CircleText({
+        x: outerRadius * Math.cos((0 * Math.PI) / 180),
+        y: outerRadius * Math.sin((0 * Math.PI) / 180),
+        innerR: 40,
+        outerR: 50,
+        fontSize: 16,
+        innerStyle: '#ff9645',
+        outerStyle: '#e1e1e1',
+        text: 'JS'
+      });
+      L3_CircleText_JS.addToGroupOrLayer(L3Group);
+      animateLayer.add(L3Group);
+
+      animateLayer.draw();
+
+      // ================ Konva 的帧动画============================
+      var rotateAnglePS = 60; // 每秒旋转60度。
+      var animate = new Konva.Animation(function(frame) {
+        var rotateAngle = (rotateAnglePS * frame.timeDiff) / 1000; // rotateAngle 是 timeDiff时间内旋转度数
+
+        L2Group.rotate(rotateAngle); // 传入参数为 角度
+
+        // 拿到二环上所有的圆的内部组 进行反向旋转
+        L2Group.getChildren().each(function(item, idx) {
+          item.rotate(-rotateAngle);
+        });
+
+        //  3环逆转
+        L3Group.rotate(-rotateAngle);
+        L3Group.getChildren().each(function(item,idx){
+            item.rotate(rotateAngle)
+        })
+      }, animateLayer);
+      animate.start(); // 一旦开始，就动画
+
+      // Konva的事件系统
+      animateLayer.on("mouseover",function () {
+        rotateAnglePS = 10;
+      });
+      animateLayer.on("mouseout",function () {
+        rotateAnglePS = 60;
+      });
+    </script>
+  </body>
+</html>
