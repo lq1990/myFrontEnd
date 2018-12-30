@@ -1,5 +1,6 @@
 const net = require('net');
 
+
 // create server
 let server = net.createServer();
 
@@ -39,6 +40,6 @@ Content-Type: text/html
 
 // ================================================================
 // start to listen the port 56789
-server.listen(56789, ()=>{
+server.listen(56789, () => {
     console.log('server begins to listen to the port 56789.');
 });
