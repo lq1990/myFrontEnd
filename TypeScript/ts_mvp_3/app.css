@@ -1,0 +1,42 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+
+div.employee-view {
+    width: 200px;
+    height: 120px;
+    border: 2px solid antiquewhite;
+    background: rgb(255, 216, 0) ;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+input.employee-id-textbox {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 156px;
+}
+
+input.employee-name-textbox {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    width: 156px;
+}
+
+input.save-button {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    width: 160px;
+}
+
+div.employee-view-dragging {
+    box-shadow: 3px 3px 5px gray;
+}
