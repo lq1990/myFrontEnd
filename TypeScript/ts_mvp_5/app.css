@@ -1,0 +1,39 @@
+body {
+    background-color: #f5f5f5;
+}
+
+div.employee {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 130px;
+    background-color: rgb(245, 226, 57);
+    border: 2px solid white;
+}
+
+input.employee-id {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 156px;
+
+}
+
+input.employee-name {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    width: 156px;
+}
+
+input.save-button {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    width: 160px;
+}
+
+.box-shadow {
+    box-shadow: 3px 3px 3px gray;
+}
