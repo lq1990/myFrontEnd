@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Welcome to BaoJie SFA</h1>
+    <h1>Welcome to BaoJie SFA...</h1>
     <div class="top_hat"></div>
     <div class="login-box">
       <!-- logo -->
@@ -9,17 +9,38 @@
       </div>
 
       <!-- login -->
-      <div class="input-group" :class="{active: act_index===1}">
+      <div class="input-group" :class="{active: act_index===1, error: errors.has('cno')}">
         <label for="cm_code">Company ID:</label>
-        <input @focus="act_index=1" type="number" id="cm_code" v-model="cm_code">
+        <input
+          name="cno"
+          v-validate="{required: true, max:6, min:4}"
+          @focus="act_index=1"
+          type="number"
+          id="cm_code"
+          v-model="cm_code"
+        >
       </div>
-      <div class="input-group" :class="{active: act_index===2}">
+      <div class="input-group" :class="{active: act_index===2, error: errors.has('eno')}">
         <label for="PNO">Employee ID:</label>
-        <input @focus="act_index=2" type="number" id="PNO" v-model="PNO">
+        <input
+          name="eno"
+          v-validate="{required: true, max: 12, min: 4}"
+          @focus="act_index=2"
+          type="number"
+          id="PNO"
+          v-model="PNO"
+        >
       </div>
-      <div class="input-group" :class="{active: act_index===3}">
+      <div class="input-group" :class="{active: act_index===3, error: errors.has('pwd')}">
         <label for="Passwd">Password:</label>
-        <input @focus="act_index=3" type="password" id="Passwd" v-model="passwd">
+        <input
+          name="pwd"
+          v-validate="{required:true, max: 12, min:4}"
+          @focus="act_index=3"
+          type="password"
+          id="Passwd"
+          v-model="passwd"
+        >
       </div>
       <div class="ck-row">
         <div class="ckbox_wrap" @click="rememberSet" :class="{active: remember}">
@@ -33,13 +54,15 @@
         </div>
       </div>
     </div>
-    <div class="btn-wrap">
+    <div class="btn-wrap" @click="loginBtnClick">
       <p>Login</p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { Indicator } from "mint-ui";
 import "../assets/font/iconfont.css";
 export default {
   name: "login",
@@ -53,6 +76,12 @@ export default {
       autologin: false
     };
   },
+  mounted() {
+    // when mounted...
+    // it is forced to do validation.
+    this.$validator.validate();
+    // in all VueInstance, there is $validator, that is provided by VeeValidate
+  },
   methods: {
     rememberSet() {
       this.remember = !this.remember;
@@ -63,6 +92,35 @@ export default {
       this.autologin = !this.autologin;
 
       this.autologin && (this.remember = true);
+    },
+    loginBtnClick() {
+      // check whether all of validation are passed
+      if (this.errors.any()) {
+        console.log("errors!");
+
+        return;
+      }
+      // console.log("no errors.");
+
+      Indicator.open("loading...");
+      // setTimeout(()=>{
+      //   Indicator.close();
+
+      // },2000);
+
+      // send ajax, use axios
+      axios.post("http://localhost:56789/login", {
+        CNO: this.cm_code,
+        PNO: this.PNO,
+        Passwd: this.passwd
+      }).then(res=>{
+        console.log(res.data);
+        Indicator.close();
+      }).catch(e=>{
+        console.log("failed to login!", e);
+        Indicator.close();
+
+      })
     }
   }
 };
@@ -138,6 +196,10 @@ h1 {
       color: $text-color-imp;
       border: 2px solid $act-color;
     }
+    .input-group.error {
+      color: red;
+      border: 2px solid red;
+    }
 
     .ck-row {
       font-size: $text-size;
@@ -162,6 +224,8 @@ h1 {
 
   .btn-wrap {
     @include login_wrap;
+    font-weight: bold;
+    letter-spacing: px2rem(10);
     height: px2rem(100);
     text-align: center;
     line-height: px2rem(100);
