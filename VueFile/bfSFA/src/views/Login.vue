@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Welcome to BaoJie SFA...</h1>
+    <h1>Welcome to BaoJie SFA....</h1>
     <div class="top_hat"></div>
     <div class="login-box">
       <!-- logo -->
@@ -61,8 +61,9 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import axios from "axios";
-import { Indicator } from "mint-ui";
+import { Indicator, Toast } from "mint-ui";
 import "../assets/font/iconfont.css";
 export default {
   name: "login",
@@ -77,12 +78,26 @@ export default {
     };
   },
   mounted() {
+    let data = JSON.parse(localStorage.getItem("Login_data"));
+    if (data) {
+      this.cm_code = data.CNO;
+      this.passwd = data.Passwd;
+      this.PNO = data.PNO;
+      this.autologin = data.autologin;
+      this.remember = data.remember;
+    }
+
     // when mounted...
     // it is forced to do validation.
     this.$validator.validate();
     // in all VueInstance, there is $validator, that is provided by VeeValidate
+
+    if (this.autologin) {
+      this.loginBtnClick();
+    }
   },
   methods: {
+    ...mapMutations(['initUser']),
     rememberSet() {
       this.remember = !this.remember;
 
@@ -109,18 +124,57 @@ export default {
       // },2000);
 
       // send ajax, use axios
-      axios.post("http://localhost:56789/login", {
-        CNO: this.cm_code,
-        PNO: this.PNO,
-        Passwd: this.passwd
-      }).then(res=>{
-        console.log(res.data);
-        Indicator.close();
-      }).catch(e=>{
-        console.log("failed to login!", e);
-        Indicator.close();
+      axios
+        .post("/api/login", {
+          CNO: this.cm_code,
+          PNO: this.PNO,
+          Passwd: this.passwd
+        })
+        .then(res => {
+          console.log(res);
+          // console.log(res.data);
+          if (res) {
+            // succeed to login, save userData and jump to Home
+            localStorage.setItem(
+              "Login_data",
+              JSON.stringify({
+                remember: this.remember,
+                autologin: this.autologin,
+                PNO: this.remember ? this.PNO : "",
+                CNO: this.remember ? this.cm_code : "",
+                Passwd: this.remember ? this.passwd : ""
+              })
+            );
 
-      })
+            // put userInfo into vuex. 
+            // Not only put it into Vuex, but also into sessionStorage, 
+            // because without sessionStorage, 
+            // if the page is refreshed, all the data would be deleted.
+
+            sessionStorage.setItem('LoginUser',JSON.stringify(res.data.user));
+
+            // this.$store.commit('initUser',res.data.user);
+            this.initUser(res.data.user);
+            
+            // jump to Home
+            this.$router.push("/home");
+          } else {
+            // failed
+            Toast({
+              message: "password is wrong.",
+              duration: 2000
+            });
+          }
+          Indicator.close();
+        })
+        .catch(() => {
+          // console.log("failed to login!", e);
+          Toast({
+            message: "failed to login",
+            duration: 2000
+          });
+          Indicator.close();
+        });
     }
   }
 };
@@ -205,7 +259,7 @@ h1 {
       font-size: $text-size;
       @include rowStyle();
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       .ckbox_wrap {
         padding-top: px2rem(8);
         padding-left: px2rem(36);
