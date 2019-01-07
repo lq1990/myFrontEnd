@@ -16,12 +16,15 @@ Vue.use(VeeValidate);
 // global router Guard. before jump to other page, have to login, if not login, 
 router.beforeEach((to, from, next) => {
   if (to.path != "/") {
+    // next();
+    
     // check if login 
-    if (helper.getTypes(store.getters.getLoginUser) === 'Object') {
+    if (helper.getTypes(store.getters.getLoginUser) == 'Object') {
       next();
     } else {
       next('/');
     }
+    
   }
   else {
     next();

@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Welcome to BaoJie SFA....</h1>
+    <h1>Welcome to BaoJie SFA..</h1>
     <div class="top_hat"></div>
     <div class="login-box">
       <!-- logo -->
@@ -61,9 +61,11 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 import axios from "axios";
 import { Indicator, Toast } from "mint-ui";
+import services from "../service";
+
 import "../assets/font/iconfont.css";
 export default {
   name: "login",
@@ -97,7 +99,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['initUser']),
+    ...mapMutations(["initUser"]),
     rememberSet() {
       this.remember = !this.remember;
 
@@ -124,8 +126,15 @@ export default {
       // },2000);
 
       // send ajax, use axios
-      axios
-        .post("/api/login", {
+      // axios
+      //   .post("/api/login", {
+      //   // .post("http://localhost:56789/login", {
+      //     CNO: this.cm_code,
+      //     PNO: this.PNO,
+      //     Passwd: this.passwd
+      //   })
+      services
+        .login({
           CNO: this.cm_code,
           PNO: this.PNO,
           Passwd: this.passwd
@@ -134,6 +143,7 @@ export default {
           console.log(res);
           // console.log(res.data);
           if (res) {
+
             // succeed to login, save userData and jump to Home
             localStorage.setItem(
               "Login_data",
@@ -146,16 +156,18 @@ export default {
               })
             );
 
-            // put userInfo into vuex. 
-            // Not only put it into Vuex, but also into sessionStorage, 
-            // because without sessionStorage, 
+            // put userInfo into vuex.
+            // Not only put it into Vuex, but also into sessionStorage,
+            // because without sessionStorage,
             // if the page is refreshed, all the data would be deleted.
-
-            sessionStorage.setItem('LoginUser',JSON.stringify(res.data.user));
+            let res_data_user = res.data.user ? res.data.user : "who";
+            sessionStorage.setItem("LoginUser", JSON.stringify(res_data_user));
+            // 在login时，把token数据放到 sessionStorage 中。
+            sessionStorage.setItem("LoginToken", res.data.token);
 
             // this.$store.commit('initUser',res.data.user);
             this.initUser(res.data.user);
-            
+
             // jump to Home
             this.$router.push("/home");
           } else {
