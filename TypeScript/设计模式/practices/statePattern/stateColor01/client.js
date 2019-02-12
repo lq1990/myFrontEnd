@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+var Context_1 = require("./Context");
+var State_1 = require("./State");
+var ctx = new Context_1.Context();
+var red = new State_1.State("red");
+var green = new State_1.State("green");
+var yellow = new State_1.State("yellow");
+red.handle(ctx);
+console.log(ctx.getState());
+yellow.handle(ctx);
+console.log(ctx.getState());
