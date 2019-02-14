@@ -8,3 +8,4 @@ import { Bike } from './Bike';
  */
 let p1 = new Person(new Bike());
 p1.takeAHoliday();
+// 
